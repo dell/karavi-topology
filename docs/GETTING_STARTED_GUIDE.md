@@ -38,7 +38,7 @@ Volume visibility is provided through the karavi-topology service and Grafana.  
 
 | Supported Version | Image                   | Helm Chart                                                |
 | ---------------- | ----------------------- | --------------------------------------------------------- |
-| v.7.1.0+         | grafana/grafana:7.1.0   | https://github.com/helm/charts/tree/master/stable/grafana |
+| v.7.1.0+         | grafana/grafana:7.1.0   | https://github.com/helm/charts/tree/main/stable/grafana |
 
 Grafana must be configured with the following data sources/plugins:
 
