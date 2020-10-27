@@ -15,14 +15,14 @@ Triage helps ensure issues resolve quickly by:
 
 If you don't have the knowledge or time to code, consider helping with triage. The community will thank you for saving them time by spending some of yours.
 
-## Flowchart diagram of the issue triage process
+## Flowchart diagram of the bug issue triage process
 
 <!-- https://textik.com/#38ec14781648871c -->
-```                                                                                                    
-                                                +------------------------+                                                                               
-                                                |  New issue opened/more |                                                                               
-                                                |  information added     |                                                                               
-                                                +------------|-----------+                                                                               
+```                                                                                                                                                                                                                                  
+                                               +--------------------------+                                                                              
+                                               | New bug issue opened/more|                                                                              
+                                               | information added        |                                                                              
+                                               +-------------|------------+                                                                              
                                                              |                                                                                           
                                                              |                                                                                           
    +----------------------------------+  NO   +--------------|-------------+                                                                             
@@ -56,13 +56,45 @@ If you don't have the knowledge or time to code, consider helping with triage. T
                      |                                                                                                                                   
            +---------|---------+          +----------+                                                                                                   
            |   Needs priority? -----------|   Done   ----------------------------------------                                                            
-           +---------|---------+   NO     +----|-----+                                      |                                                            
-                     |                         |NO                                          |                                                            
-                     | YES                     |                         +------------------|------------------+                                         
-          +----------|----------+         +----|----------------+ YES    |  Add details to issue               |                                         
-          |  label: priority/*  -----------  Signal Community?  ----------  label: help wanted                 |                                         
-          |  milestone?         |         |                     |        |  label: beginner friendly (optional)|                                         
-          +---------------------+         +---------------------+        +-------------------------------------+                                                                                                                                                                                            
+           +-------|-----------+   NO     +----|-----+                                      |                                                            
+                   |   YES                     |NO                                          |                                                            
+     +-------------|------------+              |                         +------------------|------------------+                                         
+     | label: priority/*        |         +----|----------------+ YES    |  Add details to issue               |                                         
+     | milestone?               -----------  Signal Community?  ----------  label: help wanted                 |                                         
+     | Remove needs-triage label|         |                     |        |  label: beginner friendly (optional)|                                         
+     +--------------------------+         +---------------------+        +-------------------------------------+                                         
+```
+
+## Flowchart diagram of the feature request issue triage process
+
+<!-- https://textik.com/#81e81fc717f63429 -->
+```                                                                                                                           
+                                                                                                                                 
+                                            +---------------------------------+                                                  
+                                            |New feature request issue opened/|                                                  
+                                            |more information added           |                                                  
+                                            +----------------|----------------+                                                  
+                                                             |                                                                   
+                                                             |                                                                   
+    +---------------------------------+ NO     +-------------|------------+                                                      
+    | label: triage/needs-information ---------- All required information |                                                      
+    |                                 |        | contained in issue?      |                                                      
+    +---------------------------------+        +-------------|------------+                                                      
+                                                             |                                                                   
+                                                             |                                                                   
+    +---------------------------------------+                |                                                                   
+    |Comment `Duplicate of #<issue number>` | YES +----------|----------+                                                        
+    |Remove needs-triage label              -------  Duplicate issue?   |                                                        
+    |label: triage/duplicate                |     |                     |                                                        
+    +-----------------|---------------------+     +----------|----------+                                                        
+                      |                                      |                                                                   
+                      |                                    NO|                                                                   
+                      |                        +-------------|-------------+                                                     
+                      |                        | Assign priority           |                                                     
+           +----------|-----+    +--------+    | label: priority/*         |                                                     
+           | Close issue    |    |  Done  ------ Remove needs-triage label |                                                     
+           |                |    |        |    | milestone?                |                                                     
+           +----------------+    +--------+    +---------------------------+                                                     
 ```
 
 ## 1. Find issues that need triage
@@ -120,7 +152,7 @@ If you receive a notification with additional information provided but you are n
 Make sure it's not a duplicate by searching existing issues using related terms from the issue title and description. If you think you know there is an existing issue, but can't find it, please reach out to one of the maintainers and ask for help. If you identify that the issue is a duplicate of an existing issue:
 
 1. Add a comment `duplicate of #<issue number>`
-2. Add the `triage\duplicate` label
+2. Add the `triage/duplicate` label
 
 ### Bug reports
 
@@ -145,7 +177,7 @@ If it's not perfectly clear that it's an actual bug, quickly try to reproduce it
 
 ### Enhancement/feature?
 
-1. Move on to [prioritizing the issue](#4-prioritization-of-issues).
+1. Move on to [prioritizing the issue](#4-prioritization-of-issues).  Assign the appropriate priority label to the issue, add the appropriate comments to the issue, and remove the `needs-triage` label.
 
 ## 4. Prioritization of issues
 
