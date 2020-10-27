@@ -81,10 +81,12 @@ When you're ready to contribute, it's time to create a pull request.
 
 If this is your first time contributing to an open-source project on GitHub, make sure you read about [Creating a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
+A pull request must always link to at lease one GitHub issue. If that is not the case, create a GitHub issue and link it.
+
 To increase the chance of having your pull request accepted, make sure your pull request follows these guidelines:
 
 - Title and description matches the implementation.
-- Commits within the pull request follow the formatting guidelines
+- Commits within the pull request follow the formatting guidelines.
 - The pull request closes one related issue.
 - The pull request contains necessary tests that verify the intended behavior.
 - If your pull request has conflicts, rebase your branch onto the master branch.
