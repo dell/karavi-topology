@@ -17,8 +17,10 @@ If you don't have the knowledge or time to code, consider helping with triage. T
 
 ## Flowchart diagram of the bug issue triage process
 
+By default a bug will be created with the `type/bug` and `needs-triage` labels.
+
 <!-- https://textik.com/#38ec14781648871c -->
-```                                                                                                                                                                                                                                  
+```                                                                                                                                                     
                                                +--------------------------+                                                                              
                                                | New bug issue opened/more|                                                                              
                                                | information added        |                                                                              
@@ -44,7 +46,7 @@ If you don't have the knowledge or time to code, consider helping with triage. T
                                                              |                       +----------|----------+                                             
    +----------------------------------+         +------------|------------+          |  Close Issue        |                                             
    | Update issue with details        -----------  Works as intended?     |          |                     |                                             
-   | Remove needs-triage label        |   NO    |                         |          +----------|----------+                                             
+   |                                  |   NO    |                         |          +----------|----------+                                             
    +-----------------|----------------+         +------------|------------+                     |                                                        
                      |                                       |                                  |                                                        
                      |                                       | YES                              |                                                        
@@ -63,13 +65,17 @@ If you don't have the knowledge or time to code, consider helping with triage. T
      | milestone?               -----------  Signal Community?  ----------  label: help wanted                 |                                         
      | Remove needs-triage label|         |                     |        |  label: beginner friendly (optional)|                                         
      +--------------------------+         +---------------------+        +-------------------------------------+                                         
+                                                                                                                                                                                              
 ```
 
 ## Flowchart diagram of the feature request issue triage process
 
+By default a feature request will be created with the `type/feature-request` and `needs-triage` labels.
+
+Once a feature request has been triaged and prioritized the label should be changed to `type/feature`.
+
 <!-- https://textik.com/#81e81fc717f63429 -->
-```                                                                                                                           
-                                                                                                                                 
+```                                                                                                                                 
                                             +---------------------------------+                                                  
                                             |New feature request issue opened/|                                                  
                                             |more information added           |                                                  
@@ -86,15 +92,17 @@ If you don't have the knowledge or time to code, consider helping with triage. T
     |Comment `Duplicate of #<issue number>` | YES +----------|----------+                                                        
     |Remove needs-triage label              -------  Duplicate issue?   |                                                        
     |label: triage/duplicate                |     |                     |                                                        
-    +-----------------|---------------------+     +----------|----------+                                                        
-                      |                                      |                                                                   
-                      |                                    NO|                                                                   
-                      |                        +-------------|-------------+                                                     
-                      |                        | Assign priority           |                                                     
-           +----------|-----+    +--------+    | label: priority/*         |                                                     
-           | Close issue    |    |  Done  ------ Remove needs-triage label |                                                     
-           |                |    |        |    | milestone?                |                                                     
-           +----------------+    +--------+    +---------------------------+                                                     
+    +-----------------|---------------------+     +-----------|---------+                                                        
+                      |                                       |                                                                  
+                      |                                    NO |                                                                  
+                      |                        +--------------|---------------+                                                  
+                      |                        | Assign priority              |                                                  
+                      |                        | label: priority/*            |                                                  
+                      |                        | label: type/feature          |                                                  
+           +----------|-----+    +--------+    | Remove needs-triage label    |                                                  
+           | Close issue    |    |  Done  ------ Remove type/feature-request  |                                                  
+           |                |    |        |    | milestone?                   |                                                  
+           +----------------+    +--------+    +------------------------------+                                                                                                               
 ```
 
 ## 1. Find issues that need triage
