@@ -16,8 +16,7 @@ Become one of the contributors to this project! We thrive to build a welcoming a
 * [Signing your commits](#Signing-your-commits)
 * [Code Style](#Code-Style)
 * [TODOs in the code](#TODOs-in-the-code)
-* [Testing](#Testing)
-* [I/O Workload](#IO-Workload)
+* [Building/Deploying/Testing](#Building/Deploying/Testing)
 
 ## Become a contributor
 
