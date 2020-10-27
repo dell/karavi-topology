@@ -175,13 +175,13 @@ If it's not perfectly clear that it's an actual bug, quickly try to reproduce it
 
 **It does not work as intended/by design:**
 
-### Enhancement/feature?
+### Feature request?
 
 1. Move on to [prioritizing the issue](#4-prioritization-of-issues).  Assign the appropriate priority label to the issue, add the appropriate comments to the issue, and remove the `needs-triage` label.
 
 ## 4. Prioritization of issues
 
-In general bugs and enhancement issues should be labeled with a priority.
+In general bugs and feature request issues should be labeled with a priority.
 
 This is the most difficult thing with triaging issues since it requires a lot of knowledge, context and experience before being able to think of and start feel comfortable adding a certain priority label.
 

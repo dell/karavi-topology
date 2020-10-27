@@ -25,7 +25,7 @@ You can contribute to Karavi Topology in several ways. Here are some examples:
 
 - Contribute to the Karavi Topology codebase.
 - Report and triage bugs.
-- Suggest enhancements
+- Feature requests
 - Write technical documentation and blog posts, for users and contributors.
 - Help others by answering questions about Karavi Topology.
 
@@ -48,7 +48,7 @@ An Issue __must__ be created before submitting any pull request. Any pull reques
 
 ## Feature request
 
-If you have an idea of how to improve Karavi Topology, submit an [enhancement request](https://github.com/dell/karavi-topology/issues/new?template=feature_request.md).
+If you have an idea of how to improve Karavi Topology, submit a [feature request](https://github.com/dell/karavi-topology/issues/new?template=feature_request.md).
 
 ## Answering questions
 
