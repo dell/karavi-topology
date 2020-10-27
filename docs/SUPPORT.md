@@ -6,14 +6,8 @@
 
 # How to get support for Karavi Topology
 
-For any support on Karavi Topology, please contact karavi@dell.com.
+# How to get support for Karavi
 
-## Questions
-
-You have a question about Karavi Topology and cannot find the answer in the documenation? 
-Use the **[Ask a Question](https://github.com/dell/karavi-topology/issues/new?template=ask-a-question.md)** template and fill out the required fields.
-
-## Security Vulnerabilities 
-
-Have you discovered a security vulnerability in Karavi Topology? We ask you to alert the maintainers by sending an email describing the issue, impact, and 
-fix - if applicable. You can reach the Karavi Topology maintainers at karavi@dell.com. 
+If you require help or support for Karavi Topology:
+- For example, if you want to alert a security vulnerability in karavi, send an email to the maintainers at karavi@dell.com describing issue, impact, fix, if applicable. 
+- Ask a general question to community, fill out the details @ **[Ask a Question](https://github.com/dell/karavi-topology/issues/new?template=ask-a-question.md)**.
