@@ -192,8 +192,8 @@ In case there is an uncertainty around the prioritization of an issue, please as
 | Label                             | Description                                                                                                              |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `priority/critical`               | Highest priority. Must be actively worked on as someone's top priority right now.                                        |
-| `priority/important-soon`         | Must be staffed and worked on either currently, or very soon, ideally in time for the next release.                      |
-| `priority/important-longterm`     | Important over the long term, but may not be staffed and/or may need multiple releases to complete.                      |
+| `priority/important-soon`         | Must be very soon, ideally in time for the next release.                                                                 |
+| `priority/important-longterm`     | Important over the long term, but may not be worked on immediately or may need multiple releases to complete.            |
 | `priority/awaiting-more-evidence` | Lowest priority. Possibly useful, but not yet enough interest in it.                                                     |
 | `priority/backlog`                | Higher priority than priority/awaiting-more-evidence.                                                                    |
 
