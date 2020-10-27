@@ -3,7 +3,14 @@
 Become one of the contributors to this project! We thrive to build a welcoming and open community for anyone who wants to use the project or contribute to it. There are just a few small guidelines you need to follow. To help us create a safe and positive community experience for all, we require all participants to adhere to the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 # Table of Content:
-* [Issues](#Issues)
+* [Become a contributor](#Become-a-contributor)
+* [Report bugs](#Report-bugs)
+* [Suggest enhancements](#Suggest-enhancements)
+* [Answering questions](#Answering-questions)
+* [Triage issues](#Triage-issues)
+* [Your first contribution](#Your-first-contribution)
+* [Pull requests](#Pull-requests)
+* [Commit message format](#Commit-message-format)
 * [Branching Strategy](#Branching-strategy)
 * [Code reviews](#Code-reviews)
 * [Signing your commits](#Signing-your-commits)
@@ -39,17 +46,17 @@ When opening a Bug please include the following information to help with debuggi
 
 An Issue __must__ be created before submitting any pull request. Any pull request that is created should be linked to an Issue.
 
-### Suggest enhancements
+## Suggest enhancements
 
 If you have an idea of how to improve Karavi Topology, submit an [enhancement request](https://github.com/dell/karavi-topology/issues/new?template=feature_request.md).
 
-### Answering questions
+## Answering questions
 
 If you have a question and you can't find the answer in the documentation or issues, the next step is to submit a [question](https://github.com/dell/karavi-topology/issues/new?template=ask-a-question.md)
 
 We'd love your help answering questions being asked by other Karavi users.
 
-### Triage issues
+## Triage issues
 
 Triage helps ensure that issues resolve quickly by:
 
@@ -62,7 +69,7 @@ If you don't have the knowledge or time to code, consider helping with _issue tr
 
 Read more about the ways you can [Triage issues](ISSUE_TRIAGE.md).
 
-### Your first contribution
+## Your first contribution
 
 Unsure where to begin contributing to Karavi Topology? Start by browsing issues labeled `beginner friendly` or `help wanted`.
 
