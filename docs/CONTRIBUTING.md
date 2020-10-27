@@ -92,7 +92,7 @@ To increase the chance of having your pull request accepted, make sure your pull
 
 If the pull request fixes a bug:
 
-- The pull request description must include `Closes #<issue number>` or `Fixes #<issue number>`.
+- The pull request description must include `Fixes #<issue number>`.
 - To avoid regressions, the pull request should include tests that replicate the fixed bug.
 
 The Karavi team _squashes_ all commits into one when we accept a pull request. The title of the pull request becomes the subject line of the squashed commit message. We still encourage contributors to write informative commit messages, as they becomes a part of the Git commit body.
