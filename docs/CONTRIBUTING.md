@@ -16,7 +16,7 @@ Become one of the contributors to this project! We thrive to build a welcoming a
 * [Signing your commits](#Signing-your-commits)
 * [Code Style](#Code-Style)
 * [TODOs in the code](#TODOs-in-the-code)
-* [Building/Deploying/Testing](#Building/Deploying/Testing)
+* [Building, Deploying, and Testing](#Building,-Deploying,-and-Testing)
 
 ## Become a contributor
 
@@ -239,6 +239,6 @@ A recommended approach is to ensure your editor supports running of goimports au
 ## TODOs in the code
 We don't like TODOs in the code. It is really best if you sort out all issues you can see with the changes before we check the changes in.
 
-## Building/Deploying/Testing
+## Building, Deploying, and Testing
 Please refer to the [Getting Started Guide]((./GETTING_STARTED_GUIDE.md)) for information on building, deploying, and running tests for Karavi Topology.
 
