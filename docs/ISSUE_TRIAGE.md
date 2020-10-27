@@ -192,14 +192,12 @@ In case there is an uncertainty around the prioritization of an issue, please as
 | Label                             | Description                                                                                                              |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `priority/critical`               | Highest priority. Must be actively worked on as someone's top priority right now.                                        |
-| `priority/important-soon`         | Must be very soon, ideally in time for the next release.                                                                 |
-| `priority/important-longterm`     | Important over the long term, but may not be worked on immediately or may need multiple releases to complete.            |
-| `priority/awaiting-more-evidence` | Lowest priority. Possibly useful, but not yet enough interest in it.                                                     |
-| `priority/backlog`                | Higher priority than priority/awaiting-more-evidence.                                                                    |
+| `priority/high`                   | Must be worked on soon, ideally in time for the next release.                                                            |
+| `priority/low`                    | Lowest priority. Possibly useful, but not yet enough interest in it.                                                     |
 
-**Critical bugs**
+**Critical priority**
 
-1. If a bug has been categorized and any of the following criteria apply, the bug should be labeled as critical and must be actively worked on as someone's top priority right now.
+1. If an issue has been categorized and any of the following criteria apply, the issue should be labeled as critical and must be actively worked on as someone's top priority right now.
 
    - Results in any data loss
    - Critical security or performance issues
@@ -211,28 +209,18 @@ In case there is an uncertainty around the prioritization of an issue, please as
 4. Assign or ask a maintainer for help assigning someone to make this issue their top priority right now.
 5. Add the issue to the next upcoming release milestone.
 
-**Important short-term**
+**High priority**
 
-1. Label the issue `priority/important-soon`.
+1. Label the issue `priority/high`.
 2. Add the issue to the next upcoming release milestone.
 3. Prioritize it or assign someone to work on it now or very soon.
 4. Consider requesting [help from the community](#5-requesting-help-from-the-community).
 
-**Important long-term**
+**Low prioirity**
 
-1. Label the issue `priority/important-longterm`.
-2. Consider requesting [help from the community](#5-requesting-help-from-the-community).
-
-**Backlog**
-
-1. Label the issue `priority/backlog`.
-2. Consider requesting [help from the community](#5-requesting-help-from-the-community).
-
-**Awaiting more Evidence**
-
-1. If the bug is deemed possibly useful but a low priority label the issue `priority/awaiting-more-evidence`.
+1. If the issue is deemed possibly useful but a low priority label the issue `priority/low`.
 2. The amount of interest in the issue will determine if the priority changes to be higher.
-2. Consider requesting [help from the community](#5-requesting-help-from-the-community).
+3. Consider requesting [help from the community](#5-requesting-help-from-the-community).
 
 ## 5. Requesting help from the community
 
