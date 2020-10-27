@@ -115,9 +115,9 @@ Should explain what happened, what was expected and how to reproduce it together
 - Karavi Topology version
 - Platform & OS Karavi Topology is installed on
 
-#### Enhancement requests
+#### Feature requests
 
-Should explain what enhancement or feature that the author wants to be added and why that is needed.
+Should explain what feature that the author wants to be added and why that is needed.
 
 #### Ask a Question requests
 

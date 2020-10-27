@@ -5,7 +5,7 @@ Become one of the contributors to this project! We thrive to build a welcoming a
 # Table of Content:
 * [Become a contributor](#Become-a-contributor)
 * [Report bugs](#Report-bugs)
-* [Suggest enhancements](#Suggest-enhancements)
+* [Feature request](#Feature-request)
 * [Answering questions](#Answering-questions)
 * [Triage issues](#Triage-issues)
 * [Your first contribution](#Your-first-contribution)
@@ -46,7 +46,7 @@ When opening a Bug please include the following information to help with debuggi
 
 An Issue __must__ be created before submitting any pull request. Any pull request that is created should be linked to an Issue.
 
-## Suggest enhancements
+## Feature request
 
 If you have an idea of how to improve Karavi Topology, submit an [enhancement request](https://github.com/dell/karavi-topology/issues/new?template=feature_request.md).
 
