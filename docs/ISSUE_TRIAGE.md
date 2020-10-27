@@ -2,7 +2,7 @@
 
 The main goal of issue triage is to categorize all incoming Karavi Topology issues and make sure each issue has all basic information needed for anyone else to understand and be able to start working on it.
 
-> **Note:** This information is for Karavi Topology prjoect Maintainers, Owners, and Admins. If you are a Contributor, then you will not be able to perform most of the tasks in this topic.
+> **Note:** This information is for Karavi Topology project Maintainers, Owners, and Admins. If you are a Contributor, then you will not be able to perform most of the tasks in this topic.
 
 The core maintainers of the Karavi Topology project are responsible for categorizing all incoming issues and delegating any critical or important issue to other maintainers. Triage provides an important way to contribute to an open source project. 
 
