@@ -1,11 +1,8 @@
 # How to Contribute
 
-Become one of the contributors to this project! We thrive to build a welcoming and open
-community for anyone who wants to use the project or contribute to it. There are
-just a few small guidelines you need to follow. 
+Become one of the contributors to this project! We thrive to build a welcoming and open community for anyone who wants to use the project or contribute to it. There are just a few small guidelines you need to follow. To help us create a safe and positive community experience for all, we require all participants to adhere to the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 # Table of Content:
-* [Introduction](#Introduction)
 * [Issues](#Issues)
 * [Branching Strategy](#Branching-strategy)
 * [Code reviews](#Code-reviews)
@@ -15,16 +12,23 @@ just a few small guidelines you need to follow.
 * [Testing](#Testing)
 * [I/O Workload](#IO-Workload)
 
-## Introduction
+## Become a contributor
 
-Please contribute! 
-Read the below documentation to understand the coding standards and expected practices of this project.
+You can contribute to Karavi Topology in several ways. Here are some examples:
 
-## Issues
+- Contribute to the Karavi Topology codebase.
+- Report and triage bugs.
+- Suggest enhancements
+- Write technical documentation and blog posts, for users and contributors.
+- Help others by answering questions about Karavi Topology.
 
-We greatly value your feedback! If you have any questions, wish to report a bug, or request a new feature, use our project GitHub Issues page.
+## Report bugs
 
 We aim to track and document everything related to this repo via the Issues page. The code and documentation are released with no warranties or SLAs and are intended to be supported through a community driven process.
+
+Before submitting a new issue, try to make sure someone hasn't already reported the problem. Look through the [existing issues](https://github.com/dell/karavi-topology/issues) for similar issues.
+
+Report a bug by submitting a [bug report](https://github.com/dell/karavi-topology/issues/new?template=bug_report.md). Make sure that you provide as much information as possible on how to reproduce the bug.
 
 When opening a Bug please include the following information to help with debugging:
 
@@ -34,6 +38,65 @@ When opening a Bug please include the following information to help with debuggi
 4. Supporting troubleshooting information. __Note: Do not provide private company information that could compromise your company's security.__
 
 An Issue __must__ be created before submitting any pull request. Any pull request that is created should be linked to an Issue.
+
+### Suggest enhancements
+
+If you have an idea of how to improve Karavi Topology, submit an [enhancement request](https://github.com/dell/karavi-topology/issues/new?template=feature_request.md).
+
+### Answering questions
+
+If you have a question and you can't find the answer in the documentation or issues, the next step is to submit a [question](https://github.com/dell/karavi-topology/issues/new?template=ask-a-question.md)
+
+We'd love your help answering questions being asked by other Karavi users.
+
+### Triage issues
+
+Triage helps ensure that issues resolve quickly by:
+
+- Ensuring the issue's intent and purpose is conveyed precisely. This is necessary because it can be difficult for an issue to explain how an end user experiences a problem and what actions they took.
+- Giving a contributor the information they need before they commit to resolving an issue.
+- Lowering the issue count by preventing duplicate issues.
+- Streamlining the development process by preventing duplicate discussions.
+
+If you don't have the knowledge or time to code, consider helping with _issue triage_. The Karavi community will thank you for saving them time by spending some of yours.
+
+Read more about the ways you can [Triage issues](ISSUE_TRIAGE.md).
+
+### Your first contribution
+
+Unsure where to begin contributing to Karavi Topology? Start by browsing issues labeled `beginner friendly` or `help wanted`.
+
+- [Beginner-friendly](https://github.com/dell/karavi-topology/issues?q=is%3Aopen+is%3Aissue+label%3A%22beginner+friendly%22) issues are generally straightforward to complete.
+- [Help wanted](https://github.com/dell/karavi-topology/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) issues are problems we would like the community to help us with regardless of complexity.
+
+When you're ready to contribute, it's time to create a pull request.
+
+## Pull requests
+
+If this is your first time contributing to an open-source project on GitHub, make sure you read about [Creating a pull request](https://help.github.com/en/articles/creating-a-pull-request).
+
+To increase the chance of having your pull request accepted, make sure your pull request follows these guidelines:
+
+- Title and description matches the implementation.
+- Commits within the pull request follow the formatting guidelines
+- The pull request closes one related issue.
+- The pull request contains necessary tests that verify the intended behavior.
+- If your pull request has conflicts, rebase your branch onto the master branch.
+
+If the pull request fixes a bug:
+
+- The pull request description must include `Closes #<issue number>` or `Fixes #<issue number>`.
+- To avoid regressions, the pull request should include tests that replicate the fixed bug.
+
+The Karavi team _squashes_ all commits into one when we accept a pull request. The title of the pull request becomes the subject line of the squashed commit message. We still encourage contributors to write informative commit messages, as they becomes a part of the Git commit body.
+
+We use the pull request title when we generate change logs for releases. As such, we strive to make the title as informative as possible.
+
+Make sure that the title for your pull request uses the same format as the subject line in the commit message.
+
+## Commit message format
+
+Karavi uses the guidelines for commit messages outlined in [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
 
 ## Branching Strategy
 We are following a scaled trunk branching strategy where short-lived branches are created off of the main branch. When coding is complete, the branch is merged back into main after being approved in a pull request code review.
@@ -59,10 +122,7 @@ Release branches will be created from the main branch near the time of a planned
 
 ## Code Reviews
 
-All submissions, including submissions by project members, require review. We
-use GitHub pull requests for this purpose. Consult
-[GitHub Help](https://help.github.com/articles/about-pull-requests/) for more
-information on using pull requests.
+All submissions, including submissions by project members, require review. We use GitHub pull requests for this purpose. Consult [GitHub Help](https://help.github.com/articles/about-pull-requests/) for more information on using pull requests.
 
 ## Signing your commits
 
