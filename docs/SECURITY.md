@@ -12,7 +12,7 @@ Every issue detected by `gosec` is mapped to a [CWE (Common Weakness Enumeration
 
 ## Reporting a Vulnerability
 
-Have you discovered a security vulnerability in Karavi PowerFlex Metrics?
+Have you discovered a security vulnerability in Karavi Topology?
 We ask you to alert the maintainers by sending an email, describing the issue, impact, and fix - if applicable.
 
 You can reach the Karavi maintainers at karavi@dell.com.
