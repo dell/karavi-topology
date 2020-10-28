@@ -80,9 +80,9 @@ Once all prerequisites are on the Linux host, follow the steps below to clone an
 __Note:__ If you are using a local insecure docker registry, ensure you configure the insecure registries on each of the Kubernetes worker nodes to allow access to the local docker repository
 
 ## Deploying Karavi Topology
-Karavi Topology is deployed using Helm.  Usage information and available release versions can be found here: https://github.com/dell/helm-charts/charts/karavi-topology.
+Karavi Topology is deployed using Helm.  Usage information and available release versions can be found here: https://github.com/dell/helm-charts/tree/main/charts/karavi-topology.
 
-If you built the Karavi Topology Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See https://github.com/dell/helm-charts/charts/karavi-topology for more details.
+If you built the Karavi Topology Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See https://github.com/dell/helm-charts/tree/main/charts/karavi-topology for more details.
 
 ## Testing Karavi Topology
 
