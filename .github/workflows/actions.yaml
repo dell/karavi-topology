@@ -77,4 +77,4 @@ jobs:
         uses: Azure/container-scan@v0
         with:
           image-name: karavi-topology
-          severity-threshold: MEDIUM
+          severity-threshold: HIGH
