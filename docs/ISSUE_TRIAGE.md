@@ -75,7 +75,7 @@ By default a feature request will be created with the `type/feature-request` and
 Once a feature request has been triaged and prioritized the label should be changed to `type/feature`.
 
 <!-- https://textik.com/#81e81fc717f63429 -->
-```                                                                                                                                 
+```         
                                             +---------------------------------+                                                  
                                             |New feature request issue opened/|                                                  
                                             |more information added           |                                                  
@@ -92,17 +92,22 @@ Once a feature request has been triaged and prioritized the label should be chan
     |Comment `Duplicate of #<issue number>` | YES +----------|----------+                                                        
     |Remove needs-triage label              -------  Duplicate issue?   |                                                        
     |label: triage/duplicate                |     |                     |                                                        
-    +-----------------|---------------------+     +-----------|---------+                                                        
-                      |                                       |                                                                  
-                      |                                    NO |                                                                  
-                      |                        +--------------|---------------+                                                  
-                      |                        | Assign priority              |                                                  
-                      |                        | label: priority/*            |                                                  
-                      |                        | label: type/feature          |                                                  
-           +----------|-----+    +--------+    | Remove needs-triage label    |                                                  
-           | Close issue    |    |  Done  ------ Remove type/feature-request  |                                                  
-           |                |    |        |    | milestone?                   |                                                  
-           +----------------+    +--------+    +------------------------------+                                                                                                               
+    +-----|---------------------------------+     +-----------|---------+                                                        
+          |                                                   |NO                                                                
+          |  +-------------------------+  NO   +-----------------------------+                                                   
+          |  |Add comment              |--------  Does feature request align |                                                   
+          |  |Remove needs-triage label|       |  with product vision?       |                                                   
+          |  +------|------------------+       +--------------|--------------+                                                   
+          |         |                                         | YES                                                              
+          |         |                                         |                                                                  
+          |         |                         +---------------|--------------+                                                   
+          |         |                         | Assign priority              |                                                   
+          |         |                         | label: priority/*            |                                                   
+          |         |                         | label: type/feature          |                                                   
+        +-|---------|---+       +--------+    | Remove needs-triage label    |                                                   
+        |  Close issue  |       |  Done  ------ Remove type/feature-request  |                                                   
+        |               |       |        |    | milestone?                   |                                                   
+        +---------------+       +--------+    +------------------------------+                                                   
 ```
 
 ## 1. Find issues that need triage
@@ -185,7 +190,8 @@ If it's not perfectly clear that it's an actual bug, quickly try to reproduce it
 
 ### Feature request?
 
-1. Move on to [prioritizing the issue](#4-prioritization-of-issues).  Assign the appropriate priority label to the issue, add the appropriate comments to the issue, and remove the `needs-triage` label.
+1. If the feature request does not align with the product vision, add a comment indicating so, remove the `needs-triage` label and close the issue
+2. Otherwise, move on to [prioritizing the issue](#4-prioritization-of-issues).  Assign the appropriate priority label to the issue, add the appropriate comments to the issue, and remove the `needs-triage` label.
 
 ## 4. Prioritization of issues
 
