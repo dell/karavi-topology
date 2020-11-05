@@ -11,6 +11,7 @@ Become one of the contributors to this project! We thrive to build a welcoming a
 * [Your first contribution](#Your-first-contribution)
 * [Branching Strategy](#Branching-strategy)
 * [Signing your commits](#Signing-your-commits)
+* [Signing a commit](#Signing-a-commit)
 * [Pull requests](#Pull-requests)
 * [Code reviews](#Code-reviews)
 * [Code Style](#Code-Style)
@@ -88,25 +89,13 @@ We are following a scaled trunk branching strategy where short-lived branches ar
 |  Feature     |  feature-9-olp-support            |  "9" referring to GitHub issue ID         |
 |  Bug Fix     |  bugfix-110-remove-docker-compose |  "110" referring to GitHub issue ID       |
 
-## Creating a Branch
+## Steps to create a branch for a bug fix or feature:
 1. Fork the repository.
 2. Create a branch off of the main branch. The branch name should follow [branch naming convention](#branch-naming-convention).
-
-## Working on a Branch (feature)
-1. A feature is assigned an identifier (feature flag).
-2. All branches associated with that feature will use that as a feature flag to enable/disable the code being developed.
-```
-if FeatureFlagConfig.get("new-landing-page"):
-	showNewLandingPage()
-else:
-	showOldLandingPage()
-```
 3. Write code, add tests, and commit to your branch. Optionally, add feature flags to disable any new features that are not yet ready for the release.
 4. If other code changes have merged into the upstream main branch, perform a rebase of those changes into your branch.
 5. Open a [pull request](#pull-requests) between your branch and the upstream main branch.
 6. Once your pull request has merged, your branch can be deleted.
-
-A feature is diabled by default until it has been released. This will be done by setting the associated feature flag to false. A user can enable the current bits of that feaure in the main branch by setting the feature flag to true.
 
 Release branches will be created from the main branch near the time of a planned release when all features are completed. Only critical bug fixes will be merged into the feature branch at this time. All other bug fixes and features can continue to be merged into the main branch. When a feature branch is stable, the branch will be tagged for release and the release branch will be deleted.
 
@@ -116,7 +105,7 @@ We require that developers sign off their commits to certify that they have perm
 
 GitHub will prevent a pull request from being merged if there are any unsigned commits.
 
-## Signing a commit
+# Signing a commit
 
 GPG (GNU Privacy Guard) will be used to sign commits.  Follow the instructions [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/signing-commits) to create a GPG key and configure your GitHub account to use that key.
 
@@ -160,27 +149,36 @@ We use the pull request title when we generate change logs for releases. As such
 
 Make sure that the title for your pull request uses the same format as the subject line in the commit message.
 
-### Quality Gates for pull request
-GitHub Actions are used to enforce quality gates when a pull request is created and when any commit is made to the pull request:
-- Security scans (code, modules, images, 3rd party libraries)
-- Code vetting
-- Code linting
-- Code formatting
-- Code sanitization (exclusion list detection, IP addresses, host names, etc.)
-- Code build/test/coverage
-- Branch is rebased with main
+## Quality Gates for pull request
+GitHub Actions are used to enforce quality gates when a pull request is created and when any commit is made to the pull request.
 
+#### Security scans
+This GitHub action checks security vulnerablity and malwares in code, modules, images, 3rd party libraries.
+
+#### Code vet
+This GitHub action analyzes source code to report suspicious constructs such as Printf calls whose arguments do not aligh with format string, abnormal or not used code in pull request.
+
+#### Code lint
+This Github action analyzes source code to flag programming errors, stylistics errors, and suspicious contructs. 
+
+#### Code format
+This GitHub action analyzes source code to flag formatting errors.
+
+#### Code sanitization
+This GitHub action analyzes source code for forbidden words and text. Forbidden words include such as non-inclusive language.
+
+#### Code build/test/coverage
+This GitHub action runs Go unit tests and check that code coverage per package meets a configured threshold. Flags error if given pull request do not meets the test coverage threshold and blocks the merge of pull request.
 
 # Code Reviews
 
 All submissions, including submissions by project members, require review. We use GitHub pull requests for this purpose. Consult [GitHub Help](https://help.github.com/articles/about-pull-requests/) for more information on using pull requests.
 
 A pull request must satisfy following for it to be merged:
-- A pull request will require 2 maintainer approvals
-- Maintainer must perform a code review and ensure there is no malicious code
-- Maintainer must run an internal Jenkins job to execute the End-to-end(E2E) tests
-- The maintainer updates the PR with the results of the E2E tests so the contributor is aware of any failures so they can be fixed
-- If the E2E tests pass, the maintainer will approve the PR
+- All [quality check gates](#Quality-gates-for-pull-request) are passed.
+- A pull request will require 2 maintainer approvals.
+- Maintainer must perform a code review and ensure there is no malicious code.
+- Maintainer must run a suite of tests that verify the quality of the code being submitted, and update the contributor if there are any failures.
 - If any commits are made after the PR has been approved, the PR approval will automatically be removed and the above process must happen again
 
 # Code Style
@@ -258,7 +256,6 @@ func bar() error {
 }
 ```
 
-
 Do not use the github.com/pkg/errors package as it is now in maintenance mode since Go 1.13+ added official support for error wrapping.  See https://blog.golang.org/go1.13-errors and https://github.com/fatih/errwrap.
 
 #### Gofmt
@@ -272,5 +269,5 @@ A recommended approach is to ensure your editor supports running of goimports au
 We don't like TODOs in the code. It is really best if you sort out all issues you can see with the changes before we check the changes in.
 
 # Building, Deploying, and Testing
-Please refer to the [Getting Started Guide]((./GETTING_STARTED_GUIDE.md)) for information on building, deploying, and running tests for Karavi Topology.
+Please refer to the [Getting Started Guide](./GETTING_STARTED_GUIDE.md) for information on building, deploying, and running tests for Karavi Topology.
 
