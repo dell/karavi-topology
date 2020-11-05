@@ -52,7 +52,7 @@ Grafana must be configured with the following data sources/plugins:
 | Setting | Value                             |
 | ------- | --------------------------------- |
 | Name    | JSON |
-| URL     | The Karavi Topology service can be accessed at the following URL from within your cluster: http://karavi-topology.*namespace*.svc.cluster.local:8080 |
+| URL     | If your Grafana instance is running within the same Kubernetes cluster as Karavi Topology, you can access Karavi Topology at http://karavi-topology.*namespace*.svc.cluster.local:8080.<br><br>If your Grafana instance is running in a different cluster than Karavi Topology, you can access Karavi Topology by following the [chart instructions](https://github.com/dell/helm-charts/blob/main/charts/karavi-topology/templates/NOTES.txt) if Karavi Topology was deployed as a `NodePort`. Alternatively, an [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) and an [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) can be deployed in the Kubernetes cluster running Karavi Toplogy to manage external access to the default ClusterIP configuration of Karavi Topology. The Karavi Topology service URL would then be the URL allocated by the Ingress controller to satisfy the Ingress.  |
 
 ## Building Karavi Topology (Linux Only)
 
