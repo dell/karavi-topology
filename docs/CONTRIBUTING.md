@@ -89,7 +89,7 @@ We are following a scaled trunk branching strategy where short-lived branches ar
 |  Bug Fix     |  bugfix-110-remove-docker-compose |  "110" referring to GitHub issue ID       |
 
 #### Branch Types
-- A release branch is a branch created from main that will be solely used for release a Karavi version. Only critical bug fixes will be merged into this branch.
+- A Release branch is a branch created from main that will be solely used for release a Karavi version. Only critical bug fixes will be merged into this branch.
 - Bug Fix branch is a branch which is created for the purpose of fixing the given defect/issue.
 - Feature branch is created for a feature development purpose.
 
@@ -154,13 +154,13 @@ We use the pull request title when we generate change logs for releases. As such
 Make sure that the title for your pull request uses the same format as the subject line in the commit message.
 
 ## Quality Gates for pull request
-Following GitHub Actions are used to enforce quality gates when a pull request is created or when any commit is made to the pull request. These GitHub Actions enforced our minimum code quality requirement for any code that get check into Karavi. If any of the gate fails, it is expected that contributor will look into the check log, understand the problem and resolve the issue.  
+Following GitHub Actions are used to enforce quality gates when a pull request is created or when any commit is made to the pull request. These GitHub Actions enforced our minimum code quality requirement for any code that get check into Karavi. If any of the gate fails, it is expected that contributor will look into the check log, understand the problem and resolve the issue.
 
 #### Security scans
 To check the security vulnerability, Karavi has following GitHub Actions that will be run when a pull request is open.
 - [Golang Security Checker](https://github.com/securego/gosec) inspects source code for security vulnerability by scanning the Go AST.
 - [Malwares](https://github.com/dell/common-github-actions/tree/main/malware-scanner) inspects source code for malwares.
-- Container images are scans(https://github.com/Azure/container-scan) for security vulnerability.
+- Container images are [scans](https://github.com/Azure/container-scan) for security vulnerability.
 
 #### Code vet
 This GitHub [action](https://github.com/dell/common-github-actions/tree/main/go-code-formatter-linter-vetter) analyzes source code to report suspicious constructs such as Printf calls whose arguments do not aligh with format string, abnormal or not used code in pull request. Refer Go [vet](https://golang.org/cmd/vet/)
