@@ -33,7 +33,7 @@ Karavi Topology current has support for the following Dell EMC storage systems a
 
 ### Grafana
 
-Volume visibility is provided through the karavi-topology service and Grafana.  This service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.  The [topology Grafana dashboard](../grafana/dashboards/dashboards) requires the following version of Grafana deployed in the k8s cluster. 
+Volume visibility is provided through the karavi-topology service and Grafana.  This service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.  The [topology Grafana dashboard](../grafana/dashboards/dashboards) requires the following version of Grafana deployed in the k8s cluster running the karavi-topology service. 
 
 
 | Supported Version | Image                   | Helm Chart                                                |
@@ -47,12 +47,12 @@ Grafana must be configured with the following data sources/plugins:
 | JSON data source       | https://grafana.com/grafana/plugins/simpod-json-datasource                 |
 | Data Table plugin      | https://grafana.com/grafana/plugins/briangann-datatable-panel/installation |
 
-- Configure the Grafana JSON data source:
+Configure the Grafana JSON data source:
  
 | Setting | Value                             |
 | ------- | --------------------------------- |
 | Name    | JSON |
-| URL     | If your Grafana instance is running within the same Kubernetes cluster as Karavi Topology, you can access Karavi Topology at http://karavi-topology.*namespace*.svc.cluster.local:8080.<br><br>If your Grafana instance is running in a different cluster than Karavi Topology, you can access Karavi Topology by following the [chart instructions](https://github.com/dell/helm-charts/blob/main/charts/karavi-topology/templates/NOTES.txt) if Karavi Topology was deployed as a `NodePort`. Alternatively, an [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) and an [Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) can be deployed in the Kubernetes cluster running Karavi Toplogy to manage external access to the default ClusterIP configuration of Karavi Topology. The Karavi Topology service URL would then be the URL allocated by the Ingress controller to satisfy the Ingress.  |
+| URL     | Access Karavi Topology at http://karavi-topology.*namespace*.svc.cluster.local:8080|
 
 ## Building Karavi Topology (Linux Only)
 
