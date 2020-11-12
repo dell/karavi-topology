@@ -63,6 +63,10 @@ Karavi Topology provides Kubernetes adminstrators with the following information
 Don’t hesitate to ask! Contact the team and community on [our support](./docs/SUPPORT.md).
 Open an issue if you found a bug on [Github Issues](https://github.com/dell/karavi-topology/issues).
 
+## Versioning
+
+This project is adhering to [Semantic Versioning](https://semver.org/). 
+
 ## About
 
 Karavi Topology is 100% open source and community-driven. All components are available
