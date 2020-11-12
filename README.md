@@ -47,7 +47,7 @@ Karavi Topology provides Kubernetes adminstrators with the following information
 ## Table of Content
 - [Code of Conduct](./docs/CODE_OF_CONDUCT.md)
 - Guides
-  - [Maintainer Guide](./docs/MAINTAINER_GUIDE.md)
+  - [Maintainer Guide](./docs/MAINTAINERS.md)
   - [Committer Guide](./docs/COMMITTER_GUIDE.md)
   - [Contributing Guide](./docs/CONTRIBUTING.md)
   - [Getting Started Guide](./docs/GETTING_STARTED_GUIDE.md)
