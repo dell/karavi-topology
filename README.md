@@ -53,7 +53,6 @@ Karavi Topology provides Kubernetes adminstrators with the following information
   - [Getting Started Guide](./docs/GETTING_STARTED_GUIDE.md)
 - [List of Adopters](./ADOPTERS.md)
 - [Maintainers](./docs/MAINTAINERS.md)
-- [Release Notes](./docs/RELEASE_NOTES.md)
 - [Support](#support)
 - [Security](./docs/SECURITY.md)
 - [About](#about)
