@@ -53,15 +53,18 @@ Karavi Topology provides Kubernetes administrators with the following informatio
   - [Getting Started Guide](./docs/GETTING_STARTED_GUIDE.md)
 - [List of Adopters](./ADOPTERS.md)
 - [Maintainers](./docs/MAINTAINERS.md)
-- [Release Notes](./docs/RELEASE_NOTES.md)
-- [Support](./docs/SUPPORT.md)
+- [Support](#support)
 - [Security](./docs/SECURITY.md)
 - [About](#about)
 
 ## Support
 
-Don’t hesitate to ask! Contact the team and community on the [mailing lists](https://group).
+Don’t hesitate to ask! Contact the team and community on [our support](./docs/SUPPORT.md).
 Open an issue if you found a bug on [Github Issues](https://github.com/dell/karavi-topology/issues).
+
+## Versioning
+
+This project is adhering to [Semantic Versioning](https://semver.org/). 
 
 ## About
 
