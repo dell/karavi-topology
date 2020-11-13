@@ -26,6 +26,8 @@ const (
 // Service contains data required by the service
 type Service struct {
 	VolumeFinder VolumeInfoGetter
+	CertFile     string
+	KeyFile      string
 }
 
 // VolumeInfoGetter is an interface used to get a list of volume information
@@ -43,7 +45,10 @@ type TableResponse struct {
 
 // Run will start the service and listen for HTTP requests
 func (s *Service) Run() error {
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), s.Routes())
+	if s.CertFile == "" || s.KeyFile == "" {
+		return fmt.Errorf("One or more TLS certificates not supplied: CertFile: %s, KeyFile: %s", s.CertFile, s.KeyFile)
+	}
+	return http.ListenAndServeTLS(fmt.Sprintf(":%d", port), s.CertFile, s.KeyFile, s.Routes())
 }
 
 // Routes contains the list of routes for the service

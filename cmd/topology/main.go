@@ -20,7 +20,9 @@ import (
 )
 
 const (
-	port = "8080"
+	port            = "8080"
+	defaultCertFile = "cert.pem"
+	defaultKeyFile  = "key.pem"
 )
 
 func main() {
@@ -38,8 +40,20 @@ func main() {
 		DriverNames: provisionerNames,
 	}
 
+	certFile := os.Getenv("TLS_CERT_PATH")
+	if len(strings.TrimSpace(certFile)) < 1 {
+		certFile = defaultCertFile
+	}
+
+	keyFile := os.Getenv("TLS_KEY_PATH")
+	if len(strings.TrimSpace(keyFile)) < 1 {
+		keyFile = defaultKeyFile
+	}
+
 	svc := &service.Service{
 		VolumeFinder: volumeFinder,
+		CertFile:     certFile,
+		KeyFile:      keyFile,
 	}
 
 	if err := entrypoint.Run(context.Background(), svc); err != nil {
