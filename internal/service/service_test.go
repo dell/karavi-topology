@@ -174,25 +174,6 @@ func TestQueryHandler(t *testing.T) {
 			}
 			return volumeFinder, certFile, keyFile, marshal, check(hasExpectedStatusCode(http.StatusInternalServerError))
 		},
-		"error no certs provided": func(*testing.T) (service.VolumeInfoGetter, string, string, marshalFn, []checkFn) {
-			ctrl := gomock.NewController(t)
-			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
-			certFile := ""
-			keyFile := ""
-
-			volumeInfo := []k8s.VolumeInfo{
-				{
-					Namespace: "ns-1",
-				},
-				{
-					Namespace: "ns-2",
-				},
-			}
-
-			volumeFinder.EXPECT().GetPersistentVolumes().Times(1).Return(volumeInfo, nil)
-
-			return volumeFinder, certFile, keyFile, nil, check(hasExpectedStatusCode(http.StatusInternalServerError))
-		},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -211,6 +192,43 @@ func TestQueryHandler(t *testing.T) {
 
 			for _, checkFn := range checkFns {
 				checkFn(t, res, err)
+			}
+		})
+	}
+}
+
+func TestHttpServerStartup(t *testing.T) {
+	type checkFn func(*testing.T, bool, error)
+
+	expectedError := func(t *testing.T, expectError bool, err error) {
+		if expectError {
+			assert.Error(t, err)
+		} else {
+			assert.Nil(t, err)
+		}
+	}
+
+	tests := map[string]func(t *testing.T) (string, string, []checkFn, bool){
+		"error no certs": func(*testing.T) (string, string, []checkFn, bool) {
+			certFile := ""
+			keyFile := ""
+
+			return certFile, keyFile, []checkFn{expectedError}, true
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+
+			certFile, keyFile, checkFns, expectError := tc(t)
+
+			ctx, teardown := setup(nil, certFile, keyFile)
+			defer teardown()
+
+			err := ctx.svc.Run()
+
+			for _, checkFn := range checkFns {
+				checkFn(t, expectError, err)
 			}
 		})
 	}
