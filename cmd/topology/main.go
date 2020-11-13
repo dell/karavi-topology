@@ -21,8 +21,8 @@ import (
 
 const (
 	port            = "8080"
-	defaultCertFile = "cert.pem"
-	defaultKeyFile  = "key.pem"
+	defaultCertFile = "/certs/localhost.crt"
+	defaultKeyFile  = "/certs/localhost.key"
 )
 
 func main() {
