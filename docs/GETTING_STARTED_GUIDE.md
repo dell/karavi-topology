@@ -28,9 +28,9 @@ A Kubernetes cluster with the appropriate version below is required for Karavi T
 Volume visibility is provided through the karavi-topology service and Grafana.  This service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.  The [topology Grafana dashboard](../grafana/dashboards) requires the following version of Grafana deployed in the k8s cluster running the karavi-topology service. 
 
 
-| Supported Version | Image                   | Helm Chart                                                |
-| ---------------- | ----------------------- | --------------------------------------------------------- |
-| 7.1.0         | grafana/grafana:7.1.0   | https://github.com/grafana/helm-charts/tree/main/charts/grafana |
+| Supported Version | Helm Chart                                                |
+| ----------------- | --------------------------------------------------------- |
+| 7.3.0-7.3.2       | https://github.com/grafana/helm-charts/tree/main/charts/grafana |
 
 Grafana must be configured with the following data sources/plugins:
 
