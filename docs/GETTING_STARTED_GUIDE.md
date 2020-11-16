@@ -15,6 +15,19 @@ This document steps through the deployment and configuration of Karavi Topology.
 
 The following are prerequisites for building and deploying Karavi Topology.
 
+### Valid SSL Certificates
+
+Karavi Topology exposes an https endpoint that must be secured using a valid ssl certificate and key.
+If you don't have valid ssl certificates already, you can generate self-signed certificates by running the following commands on linux:
+
+```console
+$ openssl req  -new  -newkey rsa:2048  -nodes  -keyout localhost.key  -out localhost.csr
+$ openssl  x509  -req  -in localhost.csr  -signkey localhost.key  -out localhost.crt
+
+```
+
+__Note:__ If you are deploying Karavi Topology using helm, certificate configuration will be handled by your values.yaml file. Refer to the helm documentation [here](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
+
 ### Kubernetes
 
 A Kubernetes cluster with the appropriate version below is required for Karavi Topology
