@@ -21,24 +21,16 @@ A Kubernetes cluster with the appropriate version below is required for Karavi T
 
 | Version   | 
 | --------- |
-| 1.16-1.17 |
-
-### Dell EMC Storage and CSI Driver
-
-Karavi Topology current has support for the following Dell EMC storage systems and associated CSI drivers.  One of the CSI drivers below must be deployed in the k8s cluster.  The k8s cluster must also have access to the associated storage system.
-
-| Dell EMC Storge Product | CSI Driver |
-| ----------------------- | ---------- |
-| PowerFlex v3.0/3.5 | [CSI Driver for PowerFlex v1.1.5+](https://github.com/dell/csi-vxflexos) |
+| 1.17,1.18,1.19 |
 
 ### Grafana
 
-Volume visibility is provided through the karavi-topology service and Grafana.  This service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.  The [topology Grafana dashboard](../grafana/dashboards/dashboards) requires the following version of Grafana deployed in the k8s cluster running the karavi-topology service. 
+Volume visibility is provided through the karavi-topology service and Grafana.  This service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.  The [topology Grafana dashboard](../grafana/dashboards) requires the following version of Grafana deployed in the k8s cluster running the karavi-topology service. 
 
 
-| Supported Version | Image                   | Helm Chart                                                |
-| ---------------- | ----------------------- | --------------------------------------------------------- |
-| v.7.1.0+         | grafana/grafana:7.1.0   | https://github.com/grafana/helm-charts/tree/main/charts/grafana |
+| Supported Version | Helm Chart                                                |
+| ----------------- | --------------------------------------------------------- |
+| 7.3.0-7.3.2       | https://github.com/grafana/helm-charts/tree/main/charts/grafana |
 
 Grafana must be configured with the following data sources/plugins:
 
@@ -86,7 +78,7 @@ If you built the Karavi Topology Docker image and pushed it to a local registry,
 
 ## Testing Karavi Topology
 
-From the karavi-topology root directory where the repo was cloned, the unit tests can be exectued as follows:
+From the karavi-topology root directory where the repo was cloned, the unit tests can be executed as follows:
 ```console
 $ make test
 ```

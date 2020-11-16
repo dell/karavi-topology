@@ -11,7 +11,7 @@ You may obtain a copy of the License at
 
 Karavi Topology is part of the Karavi open source suite of Kubernetes storage enablers for Dell EMC products.
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](docs/CODE_OF_CONDUCT.md)
 [![License](https://img.shields.io/github/license/dell/karavi-topology)](LICENSE)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dellemc/karavi-topology)](https://hub.docker.com/r/dellemc/karavi-topology)
 [![Go version](https://img.shields.io/github/go-mod/go-version/dell/karavi-topology)](go.mod)
@@ -23,13 +23,13 @@ Karavi Topology provides visibility into Dell EMC CSI (Container Storage Interfa
 
 Karavi Topology currently has support for the following Dell EMC storage systems and associated CSI drivers.
 
-| Dell EMC Storge Product | CSI Driver |
+| Dell EMC Storage Product | CSI Driver |
 | ----------------------- | ---------- |
-| PowerFlex v3.0/3.5 | [CSI Driver for PowerFlex v1.1.5+](https://github.com/dell/csi-vxflexos) |
+| PowerFlex v3.0/3.5 | [CSI Driver for PowerFlex v1.1.5, 1.2.0](https://github.com/dell/csi-vxflexos) |
 
 ## Karavi Topology Data
 
-Karavi Topology provides Kubernetes adminstrators with the following information related to containerized storage.
+Karavi Topology provides Kubernetes administrators with the following information related to containerized storage.
 
 | Field                      | Description                                                                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |  
