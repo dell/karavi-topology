@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	port            = "8080"
+	port            = "443"
 	defaultCertFile = "/certs/localhost.crt"
 	defaultKeyFile  = "/certs/localhost.key"
 )
