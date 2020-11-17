@@ -48,6 +48,15 @@ An Issue __must__ be created before submitting any pull request. Any pull reques
 
 If you have an idea of how to improve Karavi Topology, submit a [feature request](https://github.com/dell/karavi-topology/issues/new?template=feature_request.md).
 
+<!--
+Copyright (c) 2020 Dell Inc., or its subsidiaries. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+-->
 # Answering questions
 
 If you have a question and you can't find the answer in the documentation or issues, the next step is to submit a [question](https://github.com/dell/karavi-topology/issues/new?template=ask-a-question.md)
