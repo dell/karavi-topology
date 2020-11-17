@@ -56,7 +56,7 @@ Configure the Grafana JSON data source:
 | Skip TLS Verify     | Enabled (If not using CA certificate) |
 | With CA Cert        | Enabled (If using CA certificate) |
 
-__Note:__ If you have a CA certificate, you can provide it to Grafana to have a trusted TLS connection between Grafana and Karavi topology. Otherwise, you may enable `Skip TLS Verify`. 
+__Note:__ If you have a CA certificate that can validate the Karavi Topology service certificates, you can provide it to Grafana to have a trusted TLS connection between Grafana and the Karavi topology service. Otherwise, you may enable `Skip TLS Verify`. 
 
 ## Building Karavi Topology (Linux Only)
 
