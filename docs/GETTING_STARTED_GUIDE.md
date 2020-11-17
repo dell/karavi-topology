@@ -49,10 +49,11 @@ Grafana must be configured with the following data sources/plugins:
 
 Configure the Grafana JSON data source:
  
-| Setting | Value                             |
-| ------- | --------------------------------- |
-| Name    | JSON |
-| URL     | Access Karavi Topology at http://karavi-topology.*namespace*.svc.cluster.local:8080|
+| Setting             | Value                             |
+| ------------------- | --------------------------------- |
+| Name                | JSON |
+| URL                 | Access Karavi Topology at https://karavi-topology.*namespace*.svc.cluster.local:8080 |
+| Skip TLS Verify     | Enabled |
 
 ## Building Karavi Topology (Linux Only)
 
