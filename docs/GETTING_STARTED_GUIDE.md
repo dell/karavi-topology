@@ -52,8 +52,11 @@ Configure the Grafana JSON data source:
 | Setting             | Value                             |
 | ------------------- | --------------------------------- |
 | Name                | JSON |
-| URL                 | Access Karavi Topology at https://karavi-topology.*namespace*.svc.cluster.local:8080 |
-| Skip TLS Verify     | Enabled |
+| URL                 | Access Karavi Topology at https://karavi-topology.*namespace*.svc.cluster.local |
+| Skip TLS Verify     | Enabled (If not using CA certificate) |
+| With CA Cert        | Enabled (If using CA certificate) |
+
+__Note:__ If you have a CA certificate, you can provide it to Grafana to have a trusted TLS connection between Grafana and Karavi topology. Otherwise, you may enable `Skip TLS Verify`. 
 
 ## Building Karavi Topology (Linux Only)
 
