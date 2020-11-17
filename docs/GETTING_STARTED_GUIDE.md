@@ -86,11 +86,11 @@ $cd ../karavi-topology/cmd/topology
 $ go run main.go
 ```
 Following environment variables are required to be set:
-| Environment Variable | Description                  | Default                                        |
-| -------------------- | ---------------------------- | ---------------------------------------------- |
-| PROVISIONER_NAMES    |  Provisioner Names used to filter the Persistent Volumes created on the Kubernetes cluster (must be a comma-separated list) | ` csi-vxflexos.dellemc.com` |
-| TLS_CERT_PATH     | Location of the signed certificate file | ` /certs/localhost.crt ` |
-| TLS_KEY_PATH      | Location of the signed certificate private key file         | ` /certs/localhost.key ` |
+| Environment Variable | Description                  |
+| -------------------- | ---------------------------- |
+| PROVISIONER_NAMES    |  Provisioner Names used to filter the Persistent Volumes created on the Kubernetes cluster (must be a comma-separated list) |
+| TLS_CERT_PATH        | Location of the signed certificate file |
+| TLS_KEY_PATH         | Location of the signed certificate private key file         |
 
 ## Testing Karavi Topology
 
