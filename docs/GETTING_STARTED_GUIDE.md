@@ -76,6 +76,22 @@ Karavi Topology is deployed using Helm.  Usage information and available release
 
 If you built the Karavi Topology Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See https://github.com/dell/helm-charts/tree/main/charts/karavi-topology for more details.
 
+If you want to run Karavi Toplogy in standalone mode, built the Karavi Topology in your development environment. You can run Go command.
+```console
+$ go run <path to main.go>/main.go
+
+or
+
+$cd ../karavi-topology/cmd/topology
+$ go run main.go
+```
+Following environment variables are required to be set:
+| Environment Variable | Description                  | Default                                        |
+| -------------------- | ---------------------------- | ---------------------------------------------- |
+| PROVISIONER_NAMES    |  Provisioner Names used to filter the Persistent Volumes created on the Kubernetes cluster (must be a comma-separated list) | ` csi-vxflexos.dellemc.com` |
+| TLS_CERT_PATH     | Location of the signed certificate file | ` /certs/localhost.crt ` |
+| TLS_KEY_PATH      | Location of the signed certificate private key file         | ` /certs/localhost.key ` |
+
 ## Testing Karavi Topology
 
 From the karavi-topology root directory where the repo was cloned, the unit tests can be executed as follows:
