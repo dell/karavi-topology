@@ -18,7 +18,7 @@ Karavi Topology is part of the Karavi open source suite of Kubernetes storage en
 [![Go version](https://img.shields.io/github/go-mod/go-version/dell/karavi-topology)](go.mod)
 [![Latest Release](https://img.shields.io/github/v/release/dell/karavi-topology?label=latest&style=flat-square)](https://github.com/dell/karavi-topology/releases)
 
-Provides visibility into Dell EMC CSI (Container Storage Interface) driver provisioned volume characteristics in Kubernetes correlated with volumes on the storage system.  
+This project provides visibility into Dell EMC CSI (Container Storage Interface) driver provisioned volume characteristics in Kubernetes correlated with volumes on the storage system.  
 
 ## Supported Dell EMC Products
 
@@ -30,7 +30,7 @@ Karavi Topology currently has support for the following Dell EMC storage systems
 
 ## Topology Data
 
-Provides Kubernetes administrators with the topology data related to containerized storage. This topology data is visualized using Grafana.
+This project provides Kubernetes administrators with the topology data related to containerized storage. This topology data is visualized using Grafana.
 
 | Field                      | Description                                                                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |  

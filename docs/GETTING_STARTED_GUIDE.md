@@ -16,7 +16,7 @@ This document steps through the deployment and configuration of Karavi Topology.
 
 ## Kubernetes
 
-Requires a Kubernetes cluster that aligns with the supported versions listed below.
+The topology service requires a Kubernetes cluster that aligns with the supported versions listed below.
 
 | Version   |
 | --------- |
@@ -24,7 +24,7 @@ Requires a Kubernetes cluster that aligns with the supported versions listed bel
 
 ## Required Components
 
-Requires the following third party components to be deployed in the same Kubernetes cluster as the karavi-topology service:
+The topology service requires the following third party components to be deployed in the same Kubernetes cluster as the karavi-topology service:
 
 * Grafana
 
@@ -89,7 +89,7 @@ If you built the Docker image and pushed it to a local registry, you can deploy 
 
 ## Testing
 
-From the karavi-topology root directory where the repo was cloned, the unit tests can be executed as follows:
+From the root directory where the repo was cloned, the unit tests can be executed as follows:
 
 ```console
 make test
