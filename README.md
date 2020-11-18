@@ -30,7 +30,7 @@ Karavi Topology currently has support for the following Dell EMC storage systems
 
 ## Karavi Topology Data
 
-Karavi Topology provides Kubernetes administrators with the topology data related to containerized storage.  This topology data is visualized using Grafana.
+Karavi Topology provides Kubernetes administrators with the topology data related to containerized storage. This topology data is visualized using Grafana.
 
 | Field                      | Description                                                                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |  
