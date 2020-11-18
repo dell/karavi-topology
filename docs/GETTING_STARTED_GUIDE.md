@@ -16,7 +16,7 @@ This document steps through the deployment and configuration of Karavi Topology.
 
 ## Kubernetes
 
-First and foremost, Karavi Topology requires a Kubernetes cluster that aligns with the supported versions listed below.
+Requires a Kubernetes cluster that aligns with the supported versions listed below.
 
 | Version   |
 | --------- |
@@ -24,7 +24,7 @@ First and foremost, Karavi Topology requires a Kubernetes cluster that aligns wi
 
 ## Required Components
 
-Karavi Topology requires the following third party components to be deployed in the same Kubernetes cluster as the karavi-topology service:
+Requires the following third party components to be deployed in the same Kubernetes cluster as the karavi-topology service:
 
 * Grafana
 
@@ -56,7 +56,7 @@ Configure the Grafana JSON data source:
 
 __Note:__ If you have a CA certificate that can validate the Karavi Topology service certificates, you can provide it to Grafana to have a trusted TLS connection between Grafana and the Karavi topology service. Otherwise, you may enable `Skip TLS Verify`.
 
-## Building Karavi Topology (Linux Only)
+## Building (Linux Only)
 
 If you wish to clone and build karavi-topology, a Linux host is required with the following installed:
 
@@ -81,13 +81,13 @@ Once all prerequisites are on the Linux host, follow the steps below to clone an
 
 __Note:__ If you are using a local insecure docker registry, ensure you configure the insecure registries on each of the Kubernetes worker nodes to allow access to the local docker repository
 
-## Deploying Karavi Topology
+## Deploying
 
-Karavi Topology is deployed using Helm.  Usage information and available release versions can be found here: [Karavi Topology Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
+Karavi Topology is deployed using Helm.  Usage information and available release versions can be found here: [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
 
-If you built the Karavi Topology Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Karavi Topology Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology) for more details.
+If you built the Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology) for more details.
 
-## Testing Karavi Topology
+## Testing
 
 From the karavi-topology root directory where the repo was cloned, the unit tests can be executed as follows:
 

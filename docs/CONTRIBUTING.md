@@ -31,9 +31,9 @@ Become one of the contributors to this project! We thrive to build a welcoming a
 
 ## Become a contributor
 
-You can contribute to Karavi Topology in several ways. Here are some examples:
+You can contribute to this project in several ways. Here are some examples:
 
-* Contribute to the Karavi Topology codebase.
+* Contribute to the codebase.
 * Report and triage bugs.
 * Feature requests
 * Write technical documentation and blog posts, for users and contributors.
@@ -81,7 +81,7 @@ Read more about the ways you can [Triage issues](ISSUE_TRIAGE.md).
 
 ## Your first contribution
 
-Unsure where to begin contributing to Karavi Topology? Start by browsing issues labeled `beginner friendly` or `help wanted`.
+Unsure where to begin contributing? Start by browsing issues labeled `beginner friendly` or `help wanted`.
 
 * [Beginner-friendly](https://github.com/dell/karavi-topology/issues?q=is%3Aopen+is%3Aissue+label%3A%22beginner+friendly%22) issues are generally straightforward to complete.
 * [Help wanted](https://github.com/dell/karavi-topology/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) issues are problems we would like the community to help us with regardless of complexity.
@@ -305,4 +305,4 @@ We don't like TODOs in the code. It is really best if you sort out all issues yo
 
 ## Building, Deploying, and Testing
 
-Please refer to the [Getting Started Guide](./GETTING_STARTED_GUIDE.md) for information on building, deploying, and running tests for Karavi Topology.
+Please refer to the [Getting Started Guide](./GETTING_STARTED_GUIDE.md) for information on building, deploying, and running tests.

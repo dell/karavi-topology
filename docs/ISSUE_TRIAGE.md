@@ -10,11 +10,11 @@ You may obtain a copy of the License at
 
 # Triage issues
 
-The main goal of issue triage is to categorize all incoming Karavi Topology issues and make sure each issue has all basic information needed for anyone else to understand and be able to start working on it.
+The main goal of issue triage is to categorize all incoming issues and make sure each issue has all basic information needed for anyone else to understand and be able to start working on it.
 
-> **Note:** This information is for Karavi Topology project Maintainers, Owners, and Admins. If you are a Contributor, then you will not be able to perform most of the tasks in this topic.
+> **Note:** This information is for the project Maintainers, Owners, and Admins. If you are a Contributor, then you will not be able to perform most of the tasks in this topic.
 
-The core maintainers of the Karavi Topology project are responsible for categorizing all incoming issues and delegating any critical or important issue to other maintainers. Triage provides an important way to contribute to an open source project.
+The core maintainers of the project are responsible for categorizing all incoming issues and delegating any critical or important issue to other maintainers. Triage provides an important way to contribute to an open source project.
 
 Triage helps ensure issues resolve quickly by:
 
@@ -31,7 +31,7 @@ The easiest way to find issues that haven't been triaged is to search for issues
 
 ## 2. Ensure the issue contains basic information
 
-Make sure that the issue's author provided the standard issue information. The Karavi Topology project utilizes GitHub issue templates to guide contributors to provide standard information that must be included for each type of template or type of issue.
+Make sure that the issue's author provided the standard issue information. The project utilizes GitHub issue templates to guide contributors to provide standard information that must be included for each type of template or type of issue.
 
 ### Standard issue information that must be included
 
