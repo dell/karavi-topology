@@ -7,6 +7,7 @@ You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
 -->
+
 # Karavi Topology
 
 Karavi Topology is part of the Karavi open source suite of Kubernetes storage enablers for Dell EMC products.
@@ -29,7 +30,7 @@ Karavi Topology currently has support for the following Dell EMC storage systems
 
 ## Karavi Topology Data
 
-Karavi Topology provides Kubernetes administrators with the following information related to containerized storage.
+Karavi Topology provides Kubernetes administrators with the topology data related to containerized storage. This topology data is visualized using Grafana.
 
 | Field                      | Description                                                                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |  
@@ -44,7 +45,8 @@ Karavi Topology provides Kubernetes administrators with the following informatio
 | Storage System Volume Name | The name of the volume on the storage system that is associated with the persistent volume                                                         |
 | Storage Pool               | The storage pool name the volume/storage class is associated with                                                                                  |
 
-## Table of Content
+## Table of Contents
+
 - [Code of Conduct](./docs/CODE_OF_CONDUCT.md)
 - Guides
   - [Maintainer Guide](./docs/MAINTAINER_GUIDE.md)
@@ -64,7 +66,7 @@ Open an issue if you found a bug on [Github Issues](https://github.com/dell/kara
 
 ## Versioning
 
-This project is adhering to [Semantic Versioning](https://semver.org/). 
+This project is adhering to [Semantic Versioning](https://semver.org/).
 
 ## About
 
