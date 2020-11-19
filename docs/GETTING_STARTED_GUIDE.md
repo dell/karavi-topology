@@ -22,6 +22,12 @@ The topology service requires a Kubernetes cluster that aligns with the supporte
 | --------- |
 | 1.17-1.19 |
 
+## Deploying Topology Service
+
+Topology service is deployed using Helm.  Usage information and available release versions can be found here: [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
+
+If you built the Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology) for more details.
+
 ## Required Components
 
 The topology service requires the following third party components to be deployed in the same Kubernetes cluster as the karavi-topology service:
@@ -32,11 +38,20 @@ It is the user's responsibility to deploy Grafana according to the specification
 
 ### Grafana
 
-Volume visibility is provided through the karavi-topology service and Grafana.  This service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.  The [Grafana Topology dashboard](../grafana/dashboards) requires the following version of Grafana deployed in the Kubernetes cluster running the karavi-topology service.
+The [Grafana Topology dashboard](../grafana/dashboards) requires Grafana to be deployed in the same Kubernetes cluster as the topology service.
+Configure your Grafana instance after successful deployment of the topology service.
 
 | Supported Version | Helm Chart                                                |
 | ----------------- | --------------------------------------------------------- |
 | 7.3.0-7.3.2       | [Grafana Helm chart](https://github.com/grafana/helm-charts/tree/main/charts/grafana) |
+
+Volume visibility is provided through the topology service.  Topology service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.
+
+#### Configure topology dashboard
+
+To add the topology dashboard to Grafana, log in and click the + icon in the side menu. Then click Import. From here you can upload the JSON file or paste the JSON text directly into the text area.
+
+#### Configure sources and plugins
 
 Grafana must be configured with the following data sources/plugins:
 
@@ -44,6 +59,8 @@ Grafana must be configured with the following data sources/plugins:
 | ---------------------- | -------------------------------------------------------------------------- |
 | JSON data source       | [JSON data source](https://grafana.com/grafana/plugins/simpod-json-datasource)                 |
 | Data Table plugin      | [Data Table plugin](https://grafana.com/grafana/plugins/briangann-datatable-panel/installation) |
+
+#### Configure data sources
 
 Configure the Grafana JSON data source:
 
@@ -56,7 +73,9 @@ Configure the Grafana JSON data source:
 
 __Note:__ If you have a CA certificate that can validate the Karavi Topology service certificates, you can provide it to Grafana to have a trusted TLS connection between Grafana and the Karavi topology service. Otherwise, you may enable `Skip TLS Verify`.
 
-## Building (Linux Only)
+## Building Service
+
+__Note:__ Supported in linux only.
 
 If you wish to clone and build karavi-topology, a Linux host is required with the following installed:
 
@@ -80,12 +99,6 @@ Once all prerequisites are on the Linux host, follow the steps below to clone an
 1. To tag (with the "latest" tag) and push the image to the local Docker repository run the following: `make tag push`
 
 __Note:__ If you are using a local insecure docker registry, ensure you configure the insecure registries on each of the Kubernetes worker nodes to allow access to the local docker repository
-
-## Deploying
-
-Karavi Topology is deployed using Helm.  Usage information and available release versions can be found here: [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
-
-If you built the Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology) for more details.
 
 ## Testing
 
