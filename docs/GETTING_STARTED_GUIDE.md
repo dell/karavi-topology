@@ -22,11 +22,13 @@ The topology service requires a Kubernetes cluster that aligns with the supporte
 | --------- |
 | 1.17-1.19 |
 
-## Deploying Topology Service
+## Deploying the Topology Service
 
-Topology service is deployed using Helm.  Usage information and available release versions can be found here: [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
+The topology service is deployed using Helm.  Usage information and available release versions can be found here: [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
 
 If you built the Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology) for more details.
+
+__Note:__ The topology service must be deployed successfully to proceed further.
 
 ## Required Components
 
@@ -47,9 +49,9 @@ Configure your Grafana instance after successful deployment of the topology serv
 
 Volume visibility is provided through the topology service.  Topology service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.
 
-#### Configure Topology Dashboard
+#### Import the Topology Dashboard
 
-To add the topology dashboard to Grafana, log in and click the + icon in the side menu. Then click Import. From here you can upload the JSON file or paste the JSON text directly into the text area.
+To add the [topology dashboard](../grafana/dashboards) to Grafana, log in and click the + icon in the side menu. Then click Import. From here you can upload the JSON file or paste the JSON text directly into the text area.
 
 #### Configure Plugins
 
