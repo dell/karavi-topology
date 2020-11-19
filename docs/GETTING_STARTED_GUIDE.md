@@ -47,22 +47,22 @@ Configure your Grafana instance after successful deployment of the topology serv
 
 Volume visibility is provided through the topology service.  Topology service exposes an endpoint that can be consumed by Grafana to display CSI driver provisioned volume characteristics correlated with volumes on the storage system.
 
-#### Configure topology dashboard
+#### Configure Topology Dashboard
 
 To add the topology dashboard to Grafana, log in and click the + icon in the side menu. Then click Import. From here you can upload the JSON file or paste the JSON text directly into the text area.
 
-#### Configure sources and plugins
+#### Configure Plugins
 
-Grafana must be configured with the following data sources/plugins:
+Grafana must be configured with the following pre-requisite plugins:
 
 | Name                   | Additional Information                                                     |
 | ---------------------- | -------------------------------------------------------------------------- |
 | JSON data source       | [JSON data source](https://grafana.com/grafana/plugins/simpod-json-datasource)                 |
 | Data Table plugin      | [Data Table plugin](https://grafana.com/grafana/plugins/briangann-datatable-panel/installation) |
 
-#### Configure data sources
+#### Configure Topology Data Source
 
-Configure the Grafana JSON data source:
+Configure topology service JSON data source at Grafana:
 
 | Setting             | Value                             |
 | ------------------- | --------------------------------- |
