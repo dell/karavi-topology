@@ -22,9 +22,9 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Run the forbidden words scan
-        uses: dell/common-github-actions/code-sanitizer@bugfix-code-sanitizer-entrypoint
+        uses: dell/common-github-actions/code-sanitizer@main
         with:
-          args: .
+          args: /github/workspace
   test:
     name: Run Go unit tests and check package coverage
     runs-on: ubuntu-latest
