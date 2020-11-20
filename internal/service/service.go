@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	port = 443 
+	port = 443
 )
 
 // Service contains data required by the service
