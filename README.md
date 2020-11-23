@@ -26,7 +26,7 @@ Karavi Topology currently has support for the following Dell EMC storage systems
 
 | Dell EMC Storage Product | CSI Driver |
 | ----------------------- | ---------- |
-| PowerFlex v3.0/3.5 | [CSI Driver for PowerFlex v1.1.5, 1.2.0](https://github.com/dell/csi-vxflexos) |
+| PowerFlex v3.0/3.5 | [CSI Driver for PowerFlex v1.1.5, 1.2.0, 1.2.1](https://github.com/dell/csi-vxflexos) |
 
 ## Topology Data
 
