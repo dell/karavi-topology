@@ -59,7 +59,7 @@ Grafana must be configured with the following pre-requisite plugins:
 
 | Name                   | Additional Information                                                     |
 | ---------------------- | -------------------------------------------------------------------------- |
-| JSON data source       | [JSON data source](https://grafana.com/grafana/plugins/simpod-json-datasource)                 |
+| JSON data source       | [JSON data source](https://grafana.com/grafana/plugins/grafana-simple-json-datasource)                 |
 | Data Table plugin      | [Data Table plugin](https://grafana.com/grafana/plugins/briangann-datatable-panel/installation) |
 
 #### Configure Topology Data Source
