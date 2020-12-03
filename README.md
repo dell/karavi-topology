@@ -16,24 +16,24 @@ Karavi Topology is part of the Karavi open source suite of Kubernetes storage en
 [![License](https://img.shields.io/github/license/dell/karavi-topology)](LICENSE)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dellemc/karavi-topology)](https://hub.docker.com/r/dellemc/karavi-topology)
 [![Go version](https://img.shields.io/github/go-mod/go-version/dell/karavi-topology)](go.mod)
-[![Latest Release](https://img.shields.io/github/v/release/dell/karavi-topology?label=latest&style=flat-square)](https://github.com/dell/karavi-topology/releases)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/dell/karavi-topology?include_prereleases&label=latest&style=flat-square)](https://github.com/dell/karavi-topology/releases/latest)
 
-This project provides visibility into Dell EMC CSI (Container Storage Interface) driver provisioned volume characteristics in Kubernetes correlated with volumes on the storage system.  
+This project provides visibility into Dell EMC CSI (Container Storage Interface) driver provisioned volume characteristics in Kubernetes correlated with volumes on the storage system.
 
 ## Supported Dell EMC Products
 
 Karavi Topology currently has support for the following Dell EMC storage systems and associated CSI drivers.
 
-| Dell EMC Storage Product | CSI Driver |
-| ----------------------- | ---------- |
-| PowerFlex v3.0/3.5 | [CSI Driver for PowerFlex v1.1.5, 1.2.0, 1.2.1](https://github.com/dell/csi-vxflexos) |
+| Dell EMC Storage Product | CSI Driver                                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------------------------- |
+| PowerFlex v3.0/3.5       | [CSI Driver for Dell EMC PowerFlex v1.1.5, 1.2.0, 1.2.1](https://github.com/dell/csi-vxflexos) |
 
 ## Topology Data
 
 This project provides Kubernetes administrators with the topology data related to containerized storage. This topology data is visualized using Grafana.
 
 | Field                      | Description                                                                                                                                        |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |  
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Namespace                  | The namespace associated with the persistent volume claim                                                                                          |
 | Persistent Volume          | The name of the persistent volume                                                                                                                  |
 | Status                     | The status of the persistent volume. "Released" indicating the persistent volume has a claim. "Bound" indicating the persistent volume has a claim |
