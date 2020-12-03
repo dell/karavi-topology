@@ -36,7 +36,7 @@ type VolumeInfoGetter interface {
 	GetPersistentVolumes() ([]k8s.VolumeInfo, error)
 }
 
-// TableResponse is the expected response for getting a list of volumes (reference: https://grafana.com/grafana/plugins/simpod-json-datasource)
+// TableResponse is the expected response for getting a list of volumes (reference: https://grafana.com/grafana/plugins/grafana-simple-json-datasource)
 type TableResponse struct {
 	Columns []map[string]string `json:"columns"`
 	Rows    [][]string          `json:"rows"`
