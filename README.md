@@ -14,7 +14,7 @@ You may obtain a copy of the License at
 [![License](https://img.shields.io/github/license/dell/karavi-topology)](LICENSE)
 [![Docker Pulls](https://img.shields.io/docker/pulls/dellemc/karavi-topology)](https://hub.docker.com/r/dellemc/karavi-topology)
 [![Go version](https://img.shields.io/github/go-mod/go-version/dell/karavi-topology)](go.mod)
-[![Latest Release](https://img.shields.io/github/v/release/dell/karavi-topology?label=latest&style=flat-square)](https://github.com/dell/karavi-topology/releases)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/dell/karavi-topology?include_prereleases&label=latest&style=flat-square)](https://github.com/dell/karavi-topology/releases/latest)
 
 Karavi Topology is part of the Karavi open source suite of Kubernetes storage enablers for Dell EMC products.
 
@@ -25,7 +25,7 @@ Karavi Topology provides Kubernetes administrators with the topology data relate
 This project provides Kubernetes administrators with the topology data related to containerized storage. This topology data is visualized using Grafana.
 
 | Field                      | Description                                                                                                                                        |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |  
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Namespace                  | The namespace associated with the persistent volume claim                                                                                          |
 | Persistent Volume          | The name of the persistent volume                                                                                                                  |
 | Status                     | The status of the persistent volume. "Released" indicating the persistent volume has a claim. "Bound" indicating the persistent volume has a claim |
