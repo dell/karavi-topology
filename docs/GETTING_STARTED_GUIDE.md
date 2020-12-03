@@ -10,7 +10,7 @@ You may obtain a copy of the License at
 
 # Getting Started Guide
 
-Karavi Topology provides visibility, via Grafana, into Dell EMC CSI (Container Storage Interface) driver provisioned volume characteristics in Kubernetes correlated with volumes on the storage system. 
+Karavi Topology provides Kubernetes administrators, via Grafana, the topology data related to containerized storage that are provisioned by CSI (Container Storage Interface) Driver for Dell EMC storage products.
 
 This document steps through the deployment and configuration of Karavi Topology.
 
@@ -21,6 +21,21 @@ The topology service requires a Kubernetes cluster that aligns with the supporte
 | Version   |
 | --------- |
 | 1.17-1.19 |
+
+## Supported Dell EMC Products
+
+The topology service currently supports the following versions of Dell EMC storage systems.
+| Dell EMC Storage Product      |
+| ----------------------------- |
+| Dell EMC PowerFlex v3.0, v3.5 |
+
+## CSI Driver for Dell EMC Storage
+
+The topology service provides Kubernetes administrators with the topology data related to containerized storage that are provisioned by CSI (Container Storage Interface) Driver for Dell EMC storage products. The topology service requires that the CSI Driver for Dell EMC storage product is deployed in the Kubernetes cluster. Supported CSI driver for Dell EMC storage product are listed below:
+
+| CSI Driver |
+| ---------- |
+| [CSI Driver for Dell EMC PowerFlex v1.1.5, 1.2.0, 1.2.1](https://github.com/dell/csi-vxflexos) |
 
 ## Deploying the Topology Service
 
