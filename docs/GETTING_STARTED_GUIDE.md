@@ -10,7 +10,7 @@ You may obtain a copy of the License at
 
 # Getting Started Guide
 
-Karavi Topology provides Kubernetes administrators, via Grafana, the topology data related to containerized storage that are provisioned by CSI (Container Storage Interface) Driver for Dell EMC storage products.
+Karavi Topology provides Kubernetes administrators, via Grafana, the topology data related to containerized storage that are provisioned by a CSI (Container Storage Interface) Driver for Dell EMC storage products.
 
 This document steps through the deployment and configuration of Karavi Topology.
 
