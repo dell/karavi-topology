@@ -24,7 +24,7 @@
       "columnWidthHints": [],
       "columns": [],
       "compactRowsEnabled": false,
-      "datasource": "JSON",
+      "datasource": "Karavi-Topology",
       "datatablePagingType": "simple_numbers",
       "datatableTheme": "basic_theme",
       "emptyData": false,

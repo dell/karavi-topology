@@ -74,16 +74,16 @@ Grafana must be configured with the following pre-requisite plugins:
 
 | Name                   | Additional Information                                                     |
 | ---------------------- | -------------------------------------------------------------------------- |
-| JSON data source       | [JSON data source](https://grafana.com/grafana/plugins/grafana-simple-json-datasource)                 |
+| SimpleJson data source | [SimpleJson data source](https://grafana.com/grafana/plugins/grafana-simple-json-datasource)                 |
 | Data Table plugin      | [Data Table plugin](https://grafana.com/grafana/plugins/briangann-datatable-panel/installation) |
 
 #### Configure Topology Data Source
 
-Configure topology service JSON data source at Grafana:
+Configure topology service SimpleJson data source at Grafana:
 
 | Setting             | Value                             |
 | ------------------- | --------------------------------- |
-| Name                | JSON |
+| Name                | Karavi-Topology |
 | URL                 | Access Karavi Topology at https://karavi-topology.*namespace*.svc.cluster.local |
 | Skip TLS Verify     | Enabled (If not using CA certificate) |
 | With CA Cert        | Enabled (If using CA certificate) |
