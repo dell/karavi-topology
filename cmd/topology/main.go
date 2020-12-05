@@ -56,7 +56,7 @@ func main() {
 	if portEnv != "" {
 		var err error
 		if bindPort, err = strconv.Atoi(portEnv); err != nil {
-			fmt.Fprintf(os.Stderr, "PORT value is valid '%s'", portEnv)
+			fmt.Fprintf(os.Stderr, "PORT value is invalid: '%s'", portEnv)
 			os.Exit(1)
 		}
 	}
