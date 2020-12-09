@@ -33,7 +33,7 @@ If applicable, submit logs or stack traces from the affected services
  - Grafana Version: [e.g. 7.3.2]
  - Grafana Dashboard Title: [e.g. Kubernetes Admin Dashboard]
  - Grafana Datatable Panel plugin configuration (can be provided as a screenshot)
- - Grafana JSON Datasource configuration (can be provided as a screenshot)
+ - Grafana SimpleJson Datasource configuration (can be provided as a screenshot)
  - Additional Information...
 
 **Additional context**
