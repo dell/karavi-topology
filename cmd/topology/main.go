@@ -12,6 +12,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/dell/karavi-topology/internal/entrypoint"
@@ -50,10 +51,21 @@ func main() {
 		keyFile = defaultKeyFile
 	}
 
+	var bindPort int
+	portEnv := os.Getenv("PORT")
+	if portEnv != "" {
+		var err error
+		if bindPort, err = strconv.Atoi(portEnv); err != nil {
+			fmt.Fprintf(os.Stderr, "PORT value is invalid: '%s'", portEnv)
+			os.Exit(1)
+		}
+	}
+
 	svc := &service.Service{
 		VolumeFinder: volumeFinder,
 		CertFile:     certFile,
 		KeyFile:      keyFile,
+		Port:         bindPort,
 	}
 
 	if err := entrypoint.Run(context.Background(), svc); err != nil {

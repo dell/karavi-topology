@@ -195,24 +195,37 @@ func TestHttpServerStartup(t *testing.T) {
 		}
 	}
 
-	tests := map[string]func(t *testing.T) (string, string, []checkFn, bool){
-		"error no certs": func(*testing.T) (string, string, []checkFn, bool) {
+	tests := map[string]func(t *testing.T) (string, string, int, []checkFn, bool){
+		"error no certs": func(*testing.T) (string, string, int, []checkFn, bool) {
 			certFile := ""
 			keyFile := ""
 
-			return certFile, keyFile, []checkFn{expectedError}, true
+			return certFile, keyFile, 0, []checkFn{expectedError}, true
+		},
+		"invalid certs": func(*testing.T) (string, string, int, []checkFn, bool) {
+			certFile := "/not-valid-certs/ca.crt"
+			keyFile := "/not-valid-certs/key.file"
+
+			return certFile, keyFile, 0, []checkFn{expectedError}, true
+		},
+		"port specified - invalid certs": func(*testing.T) (string, string, int, []checkFn, bool) {
+			certFile := "/not-valid-certs/ca.crt"
+			keyFile := "/not-valid-certs/key.file"
+
+			return certFile, keyFile, 8443, []checkFn{expectedError}, true
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 
-			certFile, keyFile, checkFns, expectError := tc(t)
+			certFile, keyFile, port, checkFns, expectError := tc(t)
 
 			ctx, teardown := setup(nil)
 			defer teardown()
 			ctx.svc.CertFile = certFile
 			ctx.svc.KeyFile = keyFile
+			ctx.svc.Port = port
 
 			err := ctx.svc.Run()
 

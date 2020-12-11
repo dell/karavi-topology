@@ -28,6 +28,7 @@ type Service struct {
 	VolumeFinder VolumeInfoGetter
 	CertFile     string
 	KeyFile      string
+	Port         int
 }
 
 // VolumeInfoGetter is an interface used to get a list of volume information
@@ -48,7 +49,10 @@ func (s *Service) Run() error {
 	if s.CertFile == "" || s.KeyFile == "" {
 		return fmt.Errorf("One or more TLS certificates not supplied: CertFile: %s, KeyFile: %s", s.CertFile, s.KeyFile)
 	}
-	return http.ListenAndServeTLS(fmt.Sprintf(":%d", port), s.CertFile, s.KeyFile, s.Routes())
+	if s.Port == 0 {
+		s.Port = port
+	}
+	return http.ListenAndServeTLS(fmt.Sprintf(":%d", s.Port), s.CertFile, s.KeyFile, s.Routes())
 }
 
 // Routes contains the list of routes for the service

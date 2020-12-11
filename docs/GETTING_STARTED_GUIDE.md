@@ -22,6 +22,14 @@ The topology service requires a Kubernetes cluster that aligns with the supporte
 | --------- |
 | 1.17-1.19 |
 
+## Openshift
+
+For Openshift, the topology service requires the cluster to align with these supported versions.
+
+| Version |
+| ------- |
+| 4.5,4.6 |
+
 ## Supported Dell EMC Products
 
 The topology service currently supports the following versions of Dell EMC storage systems.
