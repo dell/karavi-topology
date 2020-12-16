@@ -47,9 +47,9 @@ The topology service provides Kubernetes administrators with the topology data r
 
 ## Deploying the Topology Service
 
-The topology service is deployed using Helm.  Usage information and available release versions can be found here: [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology).
+The topology service is deployed using Helm.  Usage information and available release versions can be found here: [Karavi Observability Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-observability).
 
-If you built the Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Helm chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-topology) for more details.
+If you built the Docker image and pushed it to a local registry, you can deploy it using the same Helm chart above.  You simply need to override the helm chart value pointing to where the Karavi Topology image lives.  See [Karavi Observability chart](https://github.com/dell/helm-charts/tree/main/charts/karavi-observability) for more details.
 
 __Note:__ The topology service must be deployed first. Once the topology service has been deployed, you can proceed to deploying/configuring the required components below.
 
