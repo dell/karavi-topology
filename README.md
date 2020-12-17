@@ -44,7 +44,7 @@ This project provides Kubernetes administrators with the topology data related t
   - [Maintainer Guide](./docs/MAINTAINER_GUIDE.md)
   - [Committer Guide](./docs/COMMITTER_GUIDE.md)
   - [Contributing Guide](./docs/CONTRIBUTING.md)
-  - [Getting Started Guide](./docs/GETTING_STARTED_GUIDE.md)
+  - [Getting Started Guide](https://github.com/dell/karavi-observability)
 - [List of Adopters](./ADOPTERS.md)
 - [Maintainers](./docs/MAINTAINERS.md)
 - [Support](#support)
