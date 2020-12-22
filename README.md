@@ -51,7 +51,7 @@ This project provides Kubernetes administrators with the topology data related t
 - [Security](./docs/SECURITY.md)
 - [About](#about)
 
-## Building the Services
+## Building the Service
 
 If you wish to clone and build the Karavi Topology services, a Linux host is required with the following installed:
 
