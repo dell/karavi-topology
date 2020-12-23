@@ -33,5 +33,5 @@ Karavi Topology follows a scaled trunk branching strategy where short-lived bran
 2. Create a branch off of the main branch. The branch name should follow [branch naming convention](#branch-naming-convention).
 3. Write code, add tests, and commit to your branch. Optionally, add feature flags to disable any new features that are not yet ready for the release.
 4. If other code changes have merged into the upstream main branch, perform a rebase of those changes into your branch.
-5. Open a [pull request](#pull-requests) between your branch and the upstream main branch.
+5. Open a [pull request](https://github.com/dell/karavi-observability/blob/main/docs/CONTRIBUTING.md#Pull-requests) between your branch and the upstream main branch.
 6. Once your pull request has merged, your branch can be deleted.
