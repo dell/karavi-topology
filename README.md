@@ -16,7 +16,7 @@ You may obtain a copy of the License at
 [![Go version](https://img.shields.io/github/go-mod/go-version/dell/karavi-topology)](go.mod)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/dell/karavi-topology?include_prereleases&label=latest&style=flat-square)](https://github.com/dell/karavi-topology/releases/latest)
 
-Karavi Topology is part of the Karavi open source suite of Kubernetes storage enablers for Dell EMC products.
+Karavi Topology is part of the Karavi Observability storage enabler, which provides Kubernetes administrators standardized approaches for storage observability in Kuberenetes environments.
 
 Karavi Topology provides Kubernetes administrators with the topology data related to containerized storage that are provisioned by CSI (Container Storage Interface) Driver for Dell EMC storage products.
 
