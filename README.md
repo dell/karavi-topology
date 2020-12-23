@@ -39,15 +39,16 @@ This project provides Kubernetes administrators with the topology data related t
 
 ## Table of Contents
 
-- [Code of Conduct](./docs/CODE_OF_CONDUCT.md)
+- [Code of Conduct](https://github.com/dell/karavi-observability/blob/main/docs/CODE_OF_CONDUCT.md)
 - Guides
-  - [Maintainer Guide](./docs/MAINTAINER_GUIDE.md)
-  - [Committer Guide](./docs/COMMITTER_GUIDE.md)
-  - [Contributing Guide](./docs/CONTRIBUTING.md)
-  - [Getting Started Guide](https://github.com/dell/karavi-observability/docs/GETTING_STARTED_GUIDE.md)
-- [List of Adopters](./ADOPTERS.md)
+  - [Maintainer Guide](https://github.com/dell/karavi-observability/blob/main/docs/MAINTAINER_GUIDE.md)
+  - [Committer Guide](https://github.com/dell/karavi-observability/blob/main/docs/COMMITTER_GUIDE.md)
+  - [Contributing Guide](https://github.com/dell/karavi-observability/blob/main/docs/CONTRIBUTING.md)
+  - [Getting Started Guide](https://github.com/dell/karavi-observability/blob/main/docs/GETTING_STARTED_GUIDE.md)
+  - [Branching Strategy](./docs/BRANCHING.md)
+- [List of Adopters](https://github.com/dell/karavi-observability/blob/main/ADOPTERS.md)
 - [Maintainers](./docs/MAINTAINERS.md)
-- [Support](#support)
+- [Support](https://github.com/dell/karavi-observability/blob/main/docs/SUPPORT.md)
 - [Security](./docs/SECURITY.md)
 - [About](#about)
 
@@ -88,8 +89,8 @@ This will also provide code coverage statistics for the various Go packages.
 
 ## Support
 
-Don’t hesitate to ask! Contact the team and community on [our support](./docs/SUPPORT.md).
-Open an issue if you found a bug on [Github Issues](https://github.com/dell/karavi-topology/issues).
+Don’t hesitate to ask! Contact the team and community on [our support page](https://github.com/dell/karavi-observability/blob/main/docs/SUPPORT.md).
+Open an issue if you found a bug on [Github Issues](https://github.com/dell/karavi-observability/issues).
 
 ## Versioning
 
