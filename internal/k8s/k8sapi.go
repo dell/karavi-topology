@@ -9,6 +9,7 @@ package k8s
 //  http://www.apache.org/licenses/LICENSE-2.0
 
 import (
+	"context"
 	"sync"
 
 	corev1 "k8s.io/api/core/v1"
@@ -34,7 +35,7 @@ func (api *API) GetPersistentVolumes() (*corev1.PersistentVolumeList, error) {
 			return nil, err
 		}
 	}
-	return api.Client.CoreV1().PersistentVolumes().List(metav1.ListOptions{})
+	return api.Client.CoreV1().PersistentVolumes().List(context.Background(), metav1.ListOptions{})
 }
 
 // ConnectFn will connect the client to the k8s API
