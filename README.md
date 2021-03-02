@@ -18,7 +18,7 @@ You may obtain a copy of the License at
 
 Karavi Topology is part of the Karavi Observability storage enabler, which provides Kubernetes administrators standardized approaches for storage observability in Kuberenetes environments.
 
-Karavi Topology provides Kubernetes administrators with the topology data related to containerized storage that are provisioned by CSI (Container Storage Interface) Driver for Dell EMC storage products.
+Karavi Topology provides Kubernetes administrators with the topology data related to containerized storage that is provisioned by CSI (Container Storage Interface) Driver for Dell EMC storage products.
 
 ## Topology Data
 
@@ -70,16 +70,16 @@ If you wish to clone and build the Karavi Topology services, a Linux host is req
 
 Once all prerequisites are on the Linux host, follow the steps below to clone and build the metrics service:
 
-1. Clone the repository: `git clone https://github.com/dell/karavi-topology.git`
-1. Set the DOCKER_REPO environment variable to point to the local Docker repository, example: `export DOCKER_REPO=<ip-address>:<port>`
-1. In the karavi-topology directory, run the following to build the Docker image called karavi-topology: `make clean build docker`
-1. To tag (with the "latest" tag) and push the image to the local Docker repository run the following: `make tag push`
+1. Clone the repository using the following command: `git clone https://github.com/dell/karavi-topology.git`
+1. Set the DOCKER_REPO environment variable to point to the local Docker repository, for example: `export DOCKER_REPO=<ip-address>:<port>`
+1. In the karavi-topology directory, run the following command to build the Docker image called karavi-topology: `make clean build docker`
+1. To tag (with the "latest" tag) and push the image to the local Docker repository run the following command: `make tag push`
 
-__Note:__ Linux support only. If you are using a local insecure docker registry, ensure you configure the insecure registries on each of the Kubernetes worker nodes to allow access to the local docker repository
+__Note:__ This only supports Linux. If you are using a local insecure docker registry, ensure you configure the insecure registries on each of the Kubernetes worker nodes to allow access to the local docker repository
 
 ## Testing Karavi Topology
 
-From the root directory where the repo was cloned, the unit tests can be executed as follows:
+From the root directory where the repo was cloned, the unit tests can be executed by running the command as follows:
 
 ```console
 make test
