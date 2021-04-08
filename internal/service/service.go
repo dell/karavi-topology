@@ -11,10 +11,10 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/dell/karavi-topology/internal/k8s"
+	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
@@ -29,6 +29,7 @@ type Service struct {
 	CertFile     string
 	KeyFile      string
 	Port         int
+	Logger       *logrus.Logger
 }
 
 // VolumeInfoGetter is an interface used to get a list of volume information
@@ -57,10 +58,23 @@ func (s *Service) Run() error {
 
 // Routes contains the list of routes for the service
 func (s *Service) Routes() *mux.Router {
+	s.Logger.Debug("setting up routes")
 	r := mux.NewRouter()
-	r.HandleFunc("/", s.rootRequest)
-	r.HandleFunc("/query", s.queryRequest)
+	r.HandleFunc("/", s.logHandler(s.rootRequest))
+	r.HandleFunc("/query", s.logHandler(s.queryRequest))
 	return r
+}
+
+func (s *Service) logHandler(h func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		h(w, r)
+		s.Logger.WithFields(logrus.Fields{
+			"uri":         r.URL.String(),
+			"method":      r.Method,
+			"remote_addr": r.RemoteAddr,
+		}).Debug("handling request")
+	}
+	return http.HandlerFunc(fn)
 }
 
 func (s *Service) rootRequest(w http.ResponseWriter, r *http.Request) {
@@ -71,16 +85,16 @@ func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
 	volumes, err := s.VolumeFinder.GetPersistentVolumes()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Printf("%v", err)
+		s.Logger.WithError(err).Error("getting persistent volumes")
 		return
 	}
-
+	s.Logger.WithField("volumes", len(volumes)).Debug("volumefinder returned persistent volumes")
 	table := generateVolumeTableJSON(volumes)
 
 	output, err := MarshalFn(table)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Printf("%v", err)
+		s.Logger.WithError(err).Error("marshalling response")
 		return
 	}
 
@@ -88,7 +102,7 @@ func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte(output))
 	if err != nil {
-		log.Printf("%v", err)
+		s.Logger.WithError(err).Error("writing response")
 		return
 	}
 }

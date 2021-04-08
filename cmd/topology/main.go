@@ -10,11 +10,10 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 
 	"github.com/dell/karavi-topology/internal/entrypoint"
 	"github.com/dell/karavi-topology/internal/k8s"
@@ -32,6 +31,8 @@ const (
 
 func main() {
 
+	logger := logrus.New()
+
 	// enable viper to get properties from environment variables or default configuration file
 	viper.AutomaticEnv()
 	viper.SetConfigFile(defaultConfigFile)
@@ -39,7 +40,7 @@ func main() {
 	err := viper.ReadInConfig()
 	// if unable to read configuration file, proceed in case we use environment variables
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "unable to read config file: %v", err)
+		logger.WithError(err).Error("unable to read config file")
 	}
 
 	volumeFinder := &k8s.VolumeFinder{
@@ -50,15 +51,34 @@ func main() {
 		provisionerNamesValue := viper.GetString("PROVISIONER_NAMES")
 		provisionerNames := strings.Split(provisionerNamesValue, ",")
 		volumeFinder.DriverNames = provisionerNames
-		log.Printf("Set DriverNames to %s", provisionerNames)
+		logger.WithField("driver_names", provisionerNames).Info("setting driver names")
 	}
 
+	updateLoggingSettings := func(logger *logrus.Logger) {
+		logFormat := viper.GetString("LOG_FORMAT")
+		if strings.EqualFold(logFormat, "json") {
+			logger.SetFormatter(&logrus.JSONFormatter{})
+		} else {
+			// use text formatter by default
+			logger.SetFormatter(&logrus.TextFormatter{})
+		}
+		logLevel := viper.GetString("LOG_LEVEL")
+		level, err := logrus.ParseLevel(logLevel)
+		if err != nil {
+			// use INFO level by default
+			level = logrus.InfoLevel
+		}
+		logger.SetLevel(level)
+	}
+
+	updateLoggingSettings(logger)
 	updateDriverNames(volumeFinder)
 
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		log.Printf("Config file changed: %v", e)
+		logger.WithField("file", defaultConfigFile).Info("configuration file changed")
 		updateDriverNames(volumeFinder)
+		updateLoggingSettings(logger)
 	})
 
 	// TLS_CERT_PATH is only read as an environment variable
@@ -79,8 +99,7 @@ func main() {
 	if portEnv != "" {
 		var err error
 		if bindPort, err = strconv.Atoi(portEnv); err != nil {
-			fmt.Fprintf(os.Stderr, "PORT value is invalid: '%s'", portEnv)
-			os.Exit(1)
+			logger.WithError(err).WithField("port", portEnv).Fatal("port value is invalid")
 		}
 	}
 
@@ -89,10 +108,10 @@ func main() {
 		CertFile:     certFile,
 		KeyFile:      keyFile,
 		Port:         bindPort,
+		Logger:       logger,
 	}
 
 	if err := entrypoint.Run(context.Background(), svc); err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
+		logger.WithError(err).Fatal("running service")
 	}
 }
