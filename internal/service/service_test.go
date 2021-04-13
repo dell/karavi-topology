@@ -19,6 +19,7 @@ import (
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/dell/karavi-topology/internal/service"
 	"github.com/dell/karavi-topology/internal/service/mocks"
+	"github.com/sirupsen/logrus"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -32,6 +33,7 @@ type TestCtx struct {
 func setup(volumeFinder service.VolumeInfoGetter) (*TestCtx, func()) {
 	svc := &service.Service{
 		VolumeFinder: volumeFinder,
+		Logger:       logrus.New(),
 	}
 	ctx := &TestCtx{
 		svc:    svc,
