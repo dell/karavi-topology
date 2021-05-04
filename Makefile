@@ -32,15 +32,15 @@ test:
 
 .PHONY: docker
 docker:
-	SERVICE=cmd/topology docker build -t karavi-topology -f Dockerfile cmd/topology
+	SERVICE=cmd/topology docker build -t csm-topology -f Dockerfile cmd/topology
 
 .PHONY: tag
 tag:
-	docker tag karavi-topology:latest ${DOCKER_REPO}/karavi-topology:latest
+	docker tag csm-topology:latest ${DOCKER_REPO}/csm-topology:latest
 
 .PHONY: push
 push:
-	docker push ${DOCKER_REPO}/karavi-topology:latest
+	docker push ${DOCKER_REPO}/csm-topology:latest
 
 .PHONY: check
 check:
