@@ -44,7 +44,8 @@ func main() {
 	}
 
 	volumeFinder := &k8s.VolumeFinder{
-		API: &k8s.API{},
+		API:    &k8s.API{},
+		Logger: logger,
 	}
 
 	updateDriverNames := func(volumeFinder *k8s.VolumeFinder) {

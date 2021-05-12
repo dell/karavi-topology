@@ -129,7 +129,7 @@ func TestQueryHandler(t *testing.T) {
 			expectedResponse[0].Columns = []map[string]string{}
 
 			expectedType := "table"
-			expectedColumns := 10
+			expectedColumns := 11
 			expectedRows := 2
 
 			return volumeFinder, nil, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows))

@@ -15,6 +15,7 @@ import (
 
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/dell/karavi-topology/internal/k8s/mocks"
+	"github.com/sirupsen/logrus"
 
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/api/core/v1"
@@ -121,7 +122,11 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 
 			api.EXPECT().GetPersistentVolumes().Times(1).Return(volumes, nil)
 
-			finder := k8s.VolumeFinder{API: api, DriverNames: []string{"csi-vxflexos.dellemc.com"}}
+			finder := k8s.VolumeFinder{
+				API:         api,
+				DriverNames: []string{"csi-vxflexos.dellemc.com"},
+				Logger:      logrus.New(),
+			}
 			return finder, check(hasNoError, checkExpectedOutput([]k8s.VolumeInfo{
 				{
 					Namespace:               "namespace-1",
@@ -190,8 +195,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 								CSI: &corev1.CSIPersistentVolumeSource{
 									Driver: "another-csi-driver.dellemc.com",
 									VolumeAttributes: map[string]string{
-										"Name":            "storage-system-volume-name-2",
-										"StoragePoolName": "storage-pool-name-2",
+										"arrayIP": "1.0.1.1",
 									},
 								},
 							},
@@ -211,7 +215,11 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 
 			api.EXPECT().GetPersistentVolumes().Times(1).Return(volumes, nil)
 
-			finder := k8s.VolumeFinder{API: api, DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com"}}
+			finder := k8s.VolumeFinder{
+				API:         api,
+				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com"},
+				Logger:      logrus.New(),
+			}
 			return finder, check(hasNoError, checkExpectedOutput([]k8s.VolumeInfo{
 				{
 					Namespace:               "namespace-1",
@@ -235,8 +243,9 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 					StorageClass:            "storage-class-name-2",
 					Driver:                  "another-csi-driver.dellemc.com",
 					ProvisionedSize:         "8Gi",
-					StorageSystemVolumeName: "storage-system-volume-name-2",
-					StoragePoolName:         "storage-pool-name-2",
+					StorageSystemVolumeName: "persistent-volume-name-2",
+					StoragePoolName:         "N/A",
+					StorageSystem:           "1.0.1.1",
 					CreatedTime:             t1.String(),
 				},
 			})), ctrl
@@ -245,7 +254,10 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			api := mocks.NewMockVolumeGetter(ctrl)
 			api.EXPECT().GetPersistentVolumes().Times(1).Return(nil, errors.New("error"))
-			finder := k8s.VolumeFinder{API: api}
+			finder := k8s.VolumeFinder{
+				API:    api,
+				Logger: logrus.New(),
+			}
 			return finder, check(hasError), ctrl
 		},
 	}
