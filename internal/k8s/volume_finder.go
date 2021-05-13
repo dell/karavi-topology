@@ -97,7 +97,7 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayIP"]
 			}
 
-			// powerstore volume do not have stprage pool unlike powerflex
+			// powerstore volume do not have storage pool unlike powerflex
 			if info.StoragePoolName == "" || len(info.StoragePoolName) == 0 {
 				info.StoragePoolName = "N/A"
 			}
