@@ -9,6 +9,7 @@ package k8s_test
 //  http://www.apache.org/licenses/LICENSE-2.0
 
 import (
+	"context"
 	"errors"
 	"testing"
 	"time"
@@ -264,7 +265,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			finder, checkFns, ctrl := tc(t)
-			volumes, err := finder.GetPersistentVolumes()
+			volumes, err := finder.GetPersistentVolumes(context.TODO())
 			for _, checkFn := range checkFns {
 				checkFn(t, volumes, err)
 			}

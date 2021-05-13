@@ -36,6 +36,7 @@ This project provides Kubernetes administrators with the topology data related t
 | Storage Class              | The storage class associated with the persistent volume                                                                                            |
 | Storage System Volume Name | The name of the volume on the storage system that is associated with the persistent volume                                                         |
 | Storage Pool               | The storage pool name the volume/storage class is associated with                                                                                  |
+| Storage System             | The storage system ID or IP address the volume is associated with                                                                                  |
 
 ## Table of Contents
 

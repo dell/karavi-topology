@@ -14,10 +14,12 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel/api/global"
 
 	"github.com/dell/karavi-topology/internal/entrypoint"
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/dell/karavi-topology/internal/service"
+	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
@@ -74,12 +76,14 @@ func main() {
 
 	updateLoggingSettings(logger)
 	updateDriverNames(volumeFinder)
+	updateTracing(logger)
 
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		logger.WithField("file", defaultConfigFile).Info("configuration file changed")
 		updateDriverNames(volumeFinder)
 		updateLoggingSettings(logger)
+		updateTracing(logger)
 	})
 
 	// TLS_CERT_PATH is only read as an environment variable
@@ -104,15 +108,45 @@ func main() {
 		}
 	}
 
+	var enableDebug bool
+	// DEBUG is only read as an environment variable
+	debugEnv := viper.GetString("DEBUG")
+	if debugEnv != "" {
+		var err error
+		if enableDebug, err = strconv.ParseBool(debugEnv); err != nil {
+			logger.WithError(err).WithField("debug", debugEnv).Fatal("debug value is invalid")
+		}
+	}
+
 	svc := &service.Service{
 		VolumeFinder: volumeFinder,
 		CertFile:     certFile,
 		KeyFile:      keyFile,
 		Port:         bindPort,
 		Logger:       logger,
+		EnableDebug:  enableDebug,
 	}
 
 	if err := entrypoint.Run(context.Background(), svc); err != nil {
 		logger.WithError(err).Fatal("running service")
+	}
+}
+
+func updateTracing(logger *logrus.Logger) {
+	zipkinURI := viper.GetString("ZIPKIN_URI")
+	zipkinServiceName := viper.GetString("ZIPKIN_SERVICE_NAME")
+	zipkinProbability := viper.GetFloat64("ZIPKIN_PROBABILITY")
+
+	tp, err := tracer.InitTracing(zipkinURI, zipkinServiceName, zipkinProbability)
+	if err != nil {
+		logger.WithError(err).Error("initializing tracer")
+	}
+
+	if tp != nil {
+		logger.WithFields(logrus.Fields{"uri": zipkinURI,
+			"service_name": zipkinServiceName,
+			"probablity":   zipkinProbability,
+		}).Infof("setting zipkin tracing")
+		global.SetTraceProvider(tp)
 	}
 }

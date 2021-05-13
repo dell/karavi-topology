@@ -9,12 +9,14 @@ package k8s
 //  http://www.apache.org/licenses/LICENSE-2.0
 
 import (
+	"context"
 	"fmt"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/api/core/v1"
 
+	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/sirupsen/logrus"
 )
 
@@ -48,7 +50,11 @@ type VolumeInfo struct {
 }
 
 // GetPersistentVolumes will return a list of persistent volume information
-func (f VolumeFinder) GetPersistentVolumes() ([]VolumeInfo, error) {
+func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, error) {
+
+	ctx, span := tracer.GetTracer(ctx, "GetPersistentVolumes")
+	defer span.End()
+
 	start := time.Now()
 	defer f.timeSince(start, "GetPersistentVolumes")
 

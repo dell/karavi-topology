@@ -5,6 +5,7 @@
 package mocks
 
 import (
+	context "context"
 	k8s "github.com/dell/karavi-topology/internal/k8s"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
@@ -34,16 +35,16 @@ func (m *MockVolumeInfoGetter) EXPECT() *MockVolumeInfoGetterMockRecorder {
 }
 
 // GetPersistentVolumes mocks base method
-func (m *MockVolumeInfoGetter) GetPersistentVolumes() ([]k8s.VolumeInfo, error) {
+func (m *MockVolumeInfoGetter) GetPersistentVolumes(arg0 context.Context) ([]k8s.VolumeInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPersistentVolumes")
+	ret := m.ctrl.Call(m, "GetPersistentVolumes", arg0)
 	ret0, _ := ret[0].([]k8s.VolumeInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetPersistentVolumes indicates an expected call of GetPersistentVolumes
-func (mr *MockVolumeInfoGetterMockRecorder) GetPersistentVolumes() *gomock.Call {
+func (mr *MockVolumeInfoGetterMockRecorder) GetPersistentVolumes(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPersistentVolumes", reflect.TypeOf((*MockVolumeInfoGetter)(nil).GetPersistentVolumes))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPersistentVolumes", reflect.TypeOf((*MockVolumeInfoGetter)(nil).GetPersistentVolumes), arg0)
 }
