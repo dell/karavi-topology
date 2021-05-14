@@ -66,13 +66,12 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 	}
 
 	for _, volume := range volumes.Items {
-
 		if Contains(f.DriverNames, volume.Spec.CSI.Driver) {
 			capacity := volume.Spec.Capacity[v1.ResourceStorage]
 			claim := volume.Spec.ClaimRef
 			status := volume.Status
 
-			f.Logger.WithField("VolumeAttributes", volume.Spec.CSI.VolumeAttributes).Debug("volumefinder volumes attributes map")
+			f.Logger.WithField("volume_attributes", volume.Spec.CSI.VolumeAttributes).Debug("volumefinder volumes attributes map")
 			info := VolumeInfo{
 				Namespace:               claim.Namespace,
 				PersistentVolumeClaim:   string(claim.UID),
