@@ -1,6 +1,6 @@
 package main
 
-// Copyright (c) 2020 Dell Inc., or its subsidiaries. All Rights Reserved.
+// Copyright (c) 2021 Dell Inc., or its subsidiaries. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel/api/global"
 
 	"github.com/dell/karavi-topology/internal/entrypoint"
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/dell/karavi-topology/internal/service"
+	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
@@ -44,7 +46,8 @@ func main() {
 	}
 
 	volumeFinder := &k8s.VolumeFinder{
-		API: &k8s.API{},
+		API:    &k8s.API{},
+		Logger: logger,
 	}
 
 	updateDriverNames := func(volumeFinder *k8s.VolumeFinder) {
@@ -73,12 +76,14 @@ func main() {
 
 	updateLoggingSettings(logger)
 	updateDriverNames(volumeFinder)
+	updateTracing(logger)
 
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		logger.WithField("file", defaultConfigFile).Info("configuration file changed")
 		updateDriverNames(volumeFinder)
 		updateLoggingSettings(logger)
+		updateTracing(logger)
 	})
 
 	// TLS_CERT_PATH is only read as an environment variable
@@ -103,15 +108,44 @@ func main() {
 		}
 	}
 
+	var enableDebug bool
+	// DEBUG is only read as an environment variable
+	debugEnv := viper.GetString("DEBUG")
+	if debugEnv != "" {
+		var err error
+		if enableDebug, err = strconv.ParseBool(debugEnv); err != nil {
+			logger.WithError(err).WithField("debug", debugEnv).Fatal("debug value is invalid")
+		}
+	}
+
 	svc := &service.Service{
 		VolumeFinder: volumeFinder,
 		CertFile:     certFile,
 		KeyFile:      keyFile,
 		Port:         bindPort,
 		Logger:       logger,
+		EnableDebug:  enableDebug,
 	}
 
 	if err := entrypoint.Run(context.Background(), svc); err != nil {
 		logger.WithError(err).Fatal("running service")
 	}
+}
+
+func updateTracing(logger *logrus.Logger) {
+	zipkinURI := viper.GetString("ZIPKIN_URI")
+	zipkinServiceName := viper.GetString("ZIPKIN_SERVICE_NAME")
+	zipkinProbability := viper.GetFloat64("ZIPKIN_PROBABILITY")
+
+	tp, err := tracer.InitTracing(zipkinURI, zipkinServiceName, zipkinProbability)
+	if err != nil {
+		logger.WithError(err).Error("initializing tracer")
+		return
+	}
+
+	logger.WithFields(logrus.Fields{"uri": zipkinURI,
+		"service_name": zipkinServiceName,
+		"probablity":   zipkinProbability,
+	}).Infof("setting zipkin tracing")
+	global.SetTraceProvider(tp)
 }

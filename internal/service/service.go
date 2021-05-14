@@ -1,6 +1,6 @@
 package service
 
-// Copyright (c) 2020 Dell Inc., or its subsidiaries. All Rights Reserved.
+// Copyright (c) 2021 Dell Inc., or its subsidiaries. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -9,6 +9,7 @@ package service
 //  http://www.apache.org/licenses/LICENSE-2.0
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -16,6 +17,10 @@ import (
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/sirupsen/logrus"
 
+	"expvar"
+	"net/http/pprof"
+
+	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/gorilla/mux"
 )
 
@@ -30,12 +35,13 @@ type Service struct {
 	KeyFile      string
 	Port         int
 	Logger       *logrus.Logger
+	EnableDebug  bool
 }
 
 // VolumeInfoGetter is an interface used to get a list of volume information
 //go:generate mockgen -destination=mocks/volume_info_getter_mocks.go -package=mocks github.com/dell/karavi-topology/internal/service VolumeInfoGetter
 type VolumeInfoGetter interface {
-	GetPersistentVolumes() ([]k8s.VolumeInfo, error)
+	GetPersistentVolumes(ctx context.Context) ([]k8s.VolumeInfo, error)
 }
 
 // TableResponse is the expected response for getting a list of volumes (reference: https://grafana.com/grafana/plugins/grafana-simple-json-datasource)
@@ -62,6 +68,12 @@ func (s *Service) Routes() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/", s.logHandler(s.rootRequest))
 	r.HandleFunc("/query", s.logHandler(s.queryRequest))
+	if s.EnableDebug {
+		r.HandleFunc("/debug/pprof/", pprof.Index)
+		r.HandleFunc("/debug/pprof/{action}", pprof.Index)
+		r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+		r.HandleFunc("/debug/vars", expvar.Handler().ServeHTTP)
+	}
 	return r
 }
 
@@ -82,7 +94,10 @@ func (s *Service) rootRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
-	volumes, err := s.VolumeFinder.GetPersistentVolumes()
+	ctx, span := tracer.GetTracer(context.Background(), "GetPersistentVolumes")
+	defer span.End()
+
+	volumes, err := s.VolumeFinder.GetPersistentVolumes(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		s.Logger.WithError(err).Error("getting persistent volumes")
@@ -118,12 +133,12 @@ func generateVolumeTableJSON(volumes []k8s.VolumeInfo) []*TableResponse {
 	}
 
 	table.Columns = generateColumns("Namespace", "Persistent Volume", "Status", "Persistent Volume Claim", "CSI Driver",
-		"Created", "Provisioned Size", "Storage Class", "Storage System Volume Name", "Storage Pool")
+		"Created", "Provisioned Size", "Storage Class", "Storage System Volume Name", "Storage Pool", "Storage System")
 
 	table.Rows = make([][]string, 0)
 	for _, volume := range volumes {
 		table.Rows = append(table.Rows, []string{volume.Namespace, volume.PersistentVolume, volume.PersistentVolumeStatus, volume.VolumeClaimName, volume.Driver, volume.CreatedTime,
-			volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName})
+			volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName, volume.StorageSystem})
 	}
 	return []*TableResponse{table}
 }

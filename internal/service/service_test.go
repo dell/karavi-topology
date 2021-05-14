@@ -1,6 +1,6 @@
 package service_test
 
-// Copyright (c) 2020 Dell Inc., or its subsidiaries. All Rights Reserved.
+// Copyright (c) 2021 Dell Inc., or its subsidiaries. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ func setup(volumeFinder service.VolumeInfoGetter) (*TestCtx, func()) {
 	svc := &service.Service{
 		VolumeFinder: volumeFinder,
 		Logger:       logrus.New(),
+		EnableDebug:  true,
 	}
 	ctx := &TestCtx{
 		svc:    svc,
@@ -119,7 +120,7 @@ func TestQueryHandler(t *testing.T) {
 				},
 			}
 
-			volumeFinder.EXPECT().GetPersistentVolumes().Times(1).Return(volumeInfo, nil)
+			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
 			expectedResponse := []service.TableResponse{
 				{
@@ -129,7 +130,7 @@ func TestQueryHandler(t *testing.T) {
 			expectedResponse[0].Columns = []map[string]string{}
 
 			expectedType := "table"
-			expectedColumns := 10
+			expectedColumns := 11
 			expectedRows := 2
 
 			return volumeFinder, nil, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows))
@@ -139,7 +140,7 @@ func TestQueryHandler(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
-			volumeFinder.EXPECT().GetPersistentVolumes().Times(1).Return(nil, errors.New("error"))
+			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(nil, errors.New("error"))
 
 			return volumeFinder, nil, check(hasExpectedStatusCode(http.StatusInternalServerError))
 		},
@@ -155,7 +156,7 @@ func TestQueryHandler(t *testing.T) {
 					Namespace: "ns-2",
 				},
 			}
-			volumeFinder.EXPECT().GetPersistentVolumes().Times(1).Return(volumeInfo, nil)
+			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
 			marshal := func(v interface{}) ([]byte, error) {
 				return nil, errors.New("error")
