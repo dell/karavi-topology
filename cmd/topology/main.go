@@ -1,6 +1,6 @@
 package main
 
-// Copyright (c) 2020 Dell Inc., or its subsidiaries. All Rights Reserved.
+// Copyright (c) 2021 Dell Inc., or its subsidiaries. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -140,13 +140,12 @@ func updateTracing(logger *logrus.Logger) {
 	tp, err := tracer.InitTracing(zipkinURI, zipkinServiceName, zipkinProbability)
 	if err != nil {
 		logger.WithError(err).Error("initializing tracer")
+		return
 	}
 
-	if tp != nil {
-		logger.WithFields(logrus.Fields{"uri": zipkinURI,
-			"service_name": zipkinServiceName,
-			"probablity":   zipkinProbability,
-		}).Infof("setting zipkin tracing")
-		global.SetTraceProvider(tp)
-	}
+	logger.WithFields(logrus.Fields{"uri": zipkinURI,
+		"service_name": zipkinServiceName,
+		"probablity":   zipkinProbability,
+	}).Infof("setting zipkin tracing")
+	global.SetTraceProvider(tp)
 }

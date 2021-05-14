@@ -10,6 +10,7 @@ package tracer
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"strings"
 
@@ -26,7 +27,7 @@ import (
 // InitTracing initializes a trace provider
 func InitTracing(uri, name string, prob float64) (*trace.Provider, error) {
 	if len(strings.TrimSpace(uri)) == 0 {
-		return nil, nil
+		return nil, errors.New("zipkin uri is empty")
 	}
 	exporter, err := zipkin.NewExporter(
 		uri,
