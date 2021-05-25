@@ -133,12 +133,12 @@ func generateVolumeTableJSON(volumes []k8s.VolumeInfo) []*TableResponse {
 	}
 
 	table.Columns = generateColumns("Namespace", "Persistent Volume", "Status", "Persistent Volume Claim", "CSI Driver",
-		"Created", "Provisioned Size", "Storage Class", "Storage System Volume Name", "Storage Pool", "Storage System")
+		"Created", "Provisioned Size", "Storage Class", "Storage System Volume Name", "Storage Pool", "Storage System", "Protocol")
 
 	table.Rows = make([][]string, 0)
 	for _, volume := range volumes {
 		table.Rows = append(table.Rows, []string{volume.Namespace, volume.PersistentVolume, volume.PersistentVolumeStatus, volume.VolumeClaimName, volume.Driver, volume.CreatedTime,
-			volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName, volume.StorageSystem})
+			volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName, volume.StorageSystem, volume.Protocol})
 	}
 	return []*TableResponse{table}
 }

@@ -196,7 +196,9 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 								CSI: &corev1.CSIPersistentVolumeSource{
 									Driver: "another-csi-driver.dellemc.com",
 									VolumeAttributes: map[string]string{
-										"arrayIP": "1.0.1.1",
+										"Name":     "persistent-volume-name-2",
+										"arrayID":  "1.0.1.1",
+										"Protocol": "scsi",
 									},
 								},
 							},
@@ -247,6 +249,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 					StorageSystemVolumeName: "persistent-volume-name-2",
 					StoragePoolName:         "N/A",
 					StorageSystem:           "1.0.1.1",
+					Protocol:                "scsi",
 					CreatedTime:             t1.String(),
 				},
 			})), ctrl
