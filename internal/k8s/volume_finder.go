@@ -46,6 +46,7 @@ type VolumeInfo struct {
 	StorageSystemVolumeName string `json:"storage_system_volume_name"`
 	StoragePoolName         string `json:"storage_pool_name"`
 	StorageSystem           string `json:"storage_system"`
+	Protocol                string `json:"protocol"`
 	CreatedTime             string `json:"created_time"`
 }
 
@@ -84,6 +85,7 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 				StorageSystemVolumeName: volume.Spec.CSI.VolumeAttributes["Name"],
 				StoragePoolName:         volume.Spec.CSI.VolumeAttributes["StoragePoolName"],
 				StorageSystem:           volume.Spec.CSI.VolumeAttributes["StorageSystem"],
+				Protocol:                volume.Spec.CSI.VolumeAttributes["Protocol"],
 				CreatedTime:             volume.CreationTimestamp.String(),
 			}
 			// powerstore do not return this value, csi created volume has storage volume name and pv name same
@@ -93,7 +95,7 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 
 			// powerflex will provide storagesystem id and powerstore will provide array IP
 			if info.StorageSystem == "" || len(info.StorageSystem) == 0 {
-				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayIP"]
+				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayID"]
 			}
 
 			// powerstore volume do not have storage pool unlike powerflex
