@@ -96,6 +96,10 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 			// powerflex will provide storagesystem id and powerstore will provide array IP
 			if info.StorageSystem == "" || len(info.StorageSystem) == 0 {
 				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayID"]
+				if info.StorageSystem == "" {
+					info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayIP"]
+				}
+
 			}
 
 			// powerstore volume do not have storage pool unlike powerflex
