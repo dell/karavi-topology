@@ -153,7 +153,7 @@ func generateVolumeAvailableMetrics(volumes []k8s.VolumeInfo, key string) []stri
 	}
 
 	metrics := []string{}
-	for m, _ := range found {
+	for m := range found {
 		metrics = append(metrics, m)
 	}
 	return metrics
