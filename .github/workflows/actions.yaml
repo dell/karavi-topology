@@ -36,7 +36,7 @@ jobs:
         with:
           threshold: 90
   coveralls:
-    name: Analize package cvoerage with coverall
+    name: Analyze package cvoerage with coverall
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -47,7 +47,7 @@ jobs:
       - name: Convert coverage.out to coverage.lcov
         uses: jandelgado/gcov2lcov-action@v1.0.5
       - name: Coveralls
-        uses: coverallsapp/github-action@v1.0.4
+        uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.github_token }}
           path-to-lcov: coverage.lcov       
