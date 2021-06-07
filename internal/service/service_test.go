@@ -144,6 +144,7 @@ func TestQueryHandler(t *testing.T) {
 
 			return volumeFinder, nil, check(hasExpectedStatusCode(http.StatusInternalServerError))
 		},
+		// initializing coverall
 		"error marshalling response": func(*testing.T) (service.VolumeInfoGetter, marshalFn, []checkFn) {
 
 			ctrl := gomock.NewController(t)
