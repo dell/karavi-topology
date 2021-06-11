@@ -33,7 +33,7 @@ type TestCtx struct {
 	server *httptest.Server
 }
 
-type monkeyPatch struct {
+type testOverrides struct {
 	marshalFn    func(interface{}) ([]byte, error)
 	decodeBodyFn func(body io.Reader, v interface{}) error
 	unMarshalFn  func(data []byte, v interface{}) error
@@ -127,8 +127,8 @@ func TestSearchHandler(t *testing.T) {
 		}
 	}
 
-	tests := map[string]func(t *testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader){
-		"success with body": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+	tests := map[string]func(t *testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader){
+		"success with body": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -145,9 +145,9 @@ func TestSearchHandler(t *testing.T) {
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
 			var jsonStr = []byte(`{"target":"Namespace"}`)
-			return volumeFinder, monkeyPatch{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedList)), bytes.NewBuffer(jsonStr)
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedList)), bytes.NewBuffer(jsonStr)
 		},
-		"success without body": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"success without body": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 			volumeInfo := []k8s.VolumeInfo{
@@ -160,18 +160,18 @@ func TestSearchHandler(t *testing.T) {
 			}
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 			expectedList := []string{}
-			return volumeFinder, monkeyPatch{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedList)), http.NoBody
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedList)), http.NoBody
 		},
-		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(nil, errors.New("error"))
 
-			return volumeFinder, monkeyPatch{}, check(hasExpectedStatusCode(http.StatusInternalServerError)), bytes.NewBuffer([]byte(`{"target":"Namespace"}`))
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusInternalServerError)), bytes.NewBuffer([]byte(`{"target":"Namespace"}`))
 		},
-		"error marshalling response": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error marshalling response": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -183,7 +183,7 @@ func TestSearchHandler(t *testing.T) {
 					Namespace: "ns-2",
 				},
 			}
-			patch := monkeyPatch{
+			patch := testOverrides{
 				marshalFn: func(v interface{}) ([]byte, error) {
 					return nil, errors.New("error")
 				},
@@ -193,7 +193,7 @@ func TestSearchHandler(t *testing.T) {
 
 			return volumeFinder, patch, check(hasExpectedStatusCode(http.StatusInternalServerError)), bytes.NewBuffer([]byte(`{"target":"Namespace"}`))
 		},
-		"error decoding body": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error decoding body": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -205,7 +205,7 @@ func TestSearchHandler(t *testing.T) {
 					Namespace: "ns-2",
 				},
 			}
-			patch := monkeyPatch{
+			patch := testOverrides{
 				decodeBodyFn: func(body io.Reader, v interface{}) error {
 					return errors.New("error")
 				},
@@ -215,7 +215,7 @@ func TestSearchHandler(t *testing.T) {
 
 			return volumeFinder, patch, check(hasExpectedStatusCode(http.StatusInternalServerError)), bytes.NewBuffer([]byte(`{"target":"Namespace"}`))
 		},
-		"error http write": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error http write": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -229,7 +229,7 @@ func TestSearchHandler(t *testing.T) {
 			}
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
-			patch := monkeyPatch{
+			patch := testOverrides{
 				httpWrite: func(w *http.ResponseWriter, data []byte) (int, error) {
 					return 0, errors.New("error")
 				},
@@ -327,8 +327,8 @@ func TestQueryHandler(t *testing.T) {
 		    ]
 		}`)
 
-	tests := map[string]func(t *testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader){
-		"success": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+	tests := map[string]func(t *testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader){
+		"success": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
@@ -348,9 +348,9 @@ func TestQueryHandler(t *testing.T) {
 			expectedColumns := 12
 			expectedRows := 2
 
-			return volumeFinder, monkeyPatch{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows)), http.NoBody
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows)), http.NoBody
 		},
-		"success with target filter": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"success with target filter": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -368,18 +368,18 @@ func TestQueryHandler(t *testing.T) {
 			expectedColumns := 12
 			expectedRows := 2
 
-			return volumeFinder, monkeyPatch{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows), hasExpectedNamespacesDriver("ns-1", "powerstore", "(Bound|Pending)")), bytes.NewBuffer(testJSON)
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows), hasExpectedNamespacesDriver("ns-1", "powerstore", "(Bound|Pending)")), bytes.NewBuffer(testJSON)
 		},
-		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(nil, errors.New("error"))
 
-			return volumeFinder, monkeyPatch{}, check(hasExpectedStatusCode(http.StatusInternalServerError)), nil
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusInternalServerError)), nil
 		},
-		"error marshalling response": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error marshalling response": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
@@ -390,7 +390,7 @@ func TestQueryHandler(t *testing.T) {
 			}
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
-			patch := monkeyPatch{
+			patch := testOverrides{
 				marshalFn: func(v interface{}) ([]byte, error) {
 					return nil, errors.New("error")
 				},
@@ -398,7 +398,7 @@ func TestQueryHandler(t *testing.T) {
 
 			return volumeFinder, patch, check(hasExpectedStatusCode(http.StatusInternalServerError)), nil
 		},
-		"error decoding body": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error decoding body": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -407,7 +407,7 @@ func TestQueryHandler(t *testing.T) {
 					Namespace: "ns-1",
 				},
 			}
-			patch := monkeyPatch{
+			patch := testOverrides{
 				decodeBodyFn: func(body io.Reader, v interface{}) error {
 					return errors.New("error")
 				},
@@ -416,7 +416,7 @@ func TestQueryHandler(t *testing.T) {
 
 			return volumeFinder, patch, check(hasExpectedStatusCode(http.StatusInternalServerError)), bytes.NewBuffer([]byte(testJSON))
 		},
-		"error unmashalling": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error unmashalling": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -425,7 +425,7 @@ func TestQueryHandler(t *testing.T) {
 					Namespace: "ns-1",
 				},
 			}
-			patch := monkeyPatch{
+			patch := testOverrides{
 				unMarshalFn: func(_ []byte, v interface{}) error {
 					return errors.New("error")
 				},
@@ -435,7 +435,7 @@ func TestQueryHandler(t *testing.T) {
 
 			return volumeFinder, patch, check(hasExpectedStatusCode(http.StatusInternalServerError)), bytes.NewBuffer([]byte(testJSON))
 		},
-		"error writing http": func(*testing.T) (service.VolumeInfoGetter, monkeyPatch, []checkFn, io.Reader) {
+		"error writing http": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -444,7 +444,7 @@ func TestQueryHandler(t *testing.T) {
 					Namespace: "ns-1",
 				},
 			}
-			patch := monkeyPatch{
+			patch := testOverrides{
 				httpWrite: func(w *http.ResponseWriter, data []byte) (int, error) {
 					return 0, errors.New("error")
 				},
