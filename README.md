@@ -28,7 +28,7 @@ For documentation, please visit [Container Storage Modules documentation](https:
 - [Maintainer Guide](https://github.com/dell/csm/blob/main/docs/MAINTAINER_GUIDE.md)
 - [Committer Guide](https://github.com/dell/csm/blob/main/docs/COMMITTER_GUIDE.md)
 - [Contributing Guide](https://github.com/dell/csm/blob/main/docs/CONTRIBUTING.md)
-- [Branching Strategy](./docs/BRANCHING.md)
+- [Branching Strategy](https://github.com/dell/csm/blob/main/docs/BRANCHING.md)
 - [List of Adopters](https://github.com/dell/csm/blob/main/ADOPTERS.md)
 - [Maintainers](https://github.com/dell/csm/blob/main/MAINTAINERS.md)
 - [Support](https://github.com/dell/csm/blob/main/docs/SUPPORT.md)
