@@ -9,8 +9,10 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.0
-	go.opentelemetry.io/otel v0.7.0
-	go.opentelemetry.io/otel/exporters/trace/zipkin v0.7.0
+	go.opentelemetry.io/otel v1.3.0
+	go.opentelemetry.io/otel/exporters/zipkin v1.3.0
+	go.opentelemetry.io/otel/sdk v1.3.0
+	go.opentelemetry.io/otel/trace v1.3.0
 	k8s.io/api v0.23.2
 	k8s.io/apimachinery v0.23.2
 	k8s.io/client-go v0.23.2
@@ -20,6 +22,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/evanphx/json-patch v4.12.0+incompatible // indirect
 	github.com/go-logr/logr v1.2.2 // indirect
+	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
@@ -31,7 +34,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/openzipkin/zipkin-go v0.2.2 // indirect
+	github.com/openzipkin/zipkin-go v0.4.0 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
@@ -42,12 +45,11 @@ require (
 	github.com/subosito/gotenv v1.2.0 // indirect
 	golang.org/x/net v0.0.0-20211209124913-491a49abca63 // indirect
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8 // indirect
-	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
+	golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a // indirect
 	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/grpc v1.43.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.66.3 // indirect

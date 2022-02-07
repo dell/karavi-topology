@@ -6,35 +6,36 @@ package mocks
 
 import (
 	context "context"
+	reflect "reflect"
+
 	k8s "github.com/dell/karavi-topology/internal/k8s"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 )
 
-// MockVolumeInfoGetter is a mock of VolumeInfoGetter interface
+// MockVolumeInfoGetter is a mock of VolumeInfoGetter interface.
 type MockVolumeInfoGetter struct {
 	ctrl     *gomock.Controller
 	recorder *MockVolumeInfoGetterMockRecorder
 }
 
-// MockVolumeInfoGetterMockRecorder is the mock recorder for MockVolumeInfoGetter
+// MockVolumeInfoGetterMockRecorder is the mock recorder for MockVolumeInfoGetter.
 type MockVolumeInfoGetterMockRecorder struct {
 	mock *MockVolumeInfoGetter
 }
 
-// NewMockVolumeInfoGetter creates a new mock instance
+// NewMockVolumeInfoGetter creates a new mock instance.
 func NewMockVolumeInfoGetter(ctrl *gomock.Controller) *MockVolumeInfoGetter {
 	mock := &MockVolumeInfoGetter{ctrl: ctrl}
 	mock.recorder = &MockVolumeInfoGetterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockVolumeInfoGetter) EXPECT() *MockVolumeInfoGetterMockRecorder {
 	return m.recorder
 }
 
-// GetPersistentVolumes mocks base method
+// GetPersistentVolumes mocks base method.
 func (m *MockVolumeInfoGetter) GetPersistentVolumes(arg0 context.Context) ([]k8s.VolumeInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPersistentVolumes", arg0)
@@ -43,7 +44,7 @@ func (m *MockVolumeInfoGetter) GetPersistentVolumes(arg0 context.Context) ([]k8s
 	return ret0, ret1
 }
 
-// GetPersistentVolumes indicates an expected call of GetPersistentVolumes
+// GetPersistentVolumes indicates an expected call of GetPersistentVolumes.
 func (mr *MockVolumeInfoGetterMockRecorder) GetPersistentVolumes(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPersistentVolumes", reflect.TypeOf((*MockVolumeInfoGetter)(nil).GetPersistentVolumes), arg0)

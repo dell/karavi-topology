@@ -14,36 +14,33 @@ import (
 	"io/ioutil"
 	"strings"
 
-	traceAPI "go.opentelemetry.io/otel/api/trace"
-	"go.opentelemetry.io/otel/exporters/trace/zipkin"
-
-	"go.opentelemetry.io/otel/api/global"
-
-	"go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/zipkin"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel/trace"
 
 	stdLog "log"
 )
 
 // InitTracing initializes a trace provider
-func InitTracing(uri, name string, prob float64) (*trace.Provider, error) {
+func InitTracing(uri string, prob float64) (trace.TracerProvider, error) {
 	if len(strings.TrimSpace(uri)) == 0 {
 		return nil, errors.New("zipkin uri is empty")
 	}
-	exporter, err := zipkin.NewExporter(
+	exporter, err := zipkin.New(
 		uri,
-		name,
 		zipkin.WithLogger(stdLog.New(ioutil.Discard, "", stdLog.LstdFlags)),
 	)
 	if err != nil {
 		return nil, err
 	}
-	tp, err := trace.NewProvider(
-		trace.WithConfig(trace.Config{DefaultSampler: trace.ProbabilitySampler(prob)}),
-		trace.WithBatcher(
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithSampler(sdktrace.TraceIDRatioBased(prob)),
+		sdktrace.WithBatcher(
 			exporter,
-			trace.WithMaxExportBatchSize(trace.DefaultMaxExportBatchSize),
-			trace.WithBatchTimeout(trace.DefaultBatchTimeout),
-			trace.WithMaxExportBatchSize(trace.DefaultMaxExportBatchSize),
+			sdktrace.WithMaxExportBatchSize(sdktrace.DefaultMaxExportBatchSize),
+			sdktrace.WithBatchTimeout(sdktrace.DefaultBatchTimeout),
+			sdktrace.WithMaxExportBatchSize(sdktrace.DefaultMaxExportBatchSize),
 		),
 	)
 	if err != nil {
@@ -53,7 +50,7 @@ func InitTracing(uri, name string, prob float64) (*trace.Provider, error) {
 }
 
 // GetTracer returns the generic tracer for the application
-func GetTracer(ctx context.Context, spanName string) (context.Context, traceAPI.Span) {
-	tr := global.TraceProvider().Tracer("karavi-topology")
-	return tr.Start(ctx, spanName)
+func GetTracer(ctx context.Context, spanName string) (context.Context, trace.Span) {
+	tr := otel.GetTracerProvider()
+	return tr.Tracer("karavi-topology").Start(ctx, spanName)
 }
