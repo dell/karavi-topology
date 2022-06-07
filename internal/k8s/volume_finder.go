@@ -11,6 +11,7 @@ package k8s
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -18,6 +19,13 @@ import (
 
 	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/sirupsen/logrus"
+)
+
+const (
+	// ProtocolNfs Protocol NFS in lower case
+	ProtocolNfs = "nfs"
+	// CsiDriverNamePowerScale CSI PowerScale Name
+	CsiDriverNamePowerScale = "isilon"
 )
 
 // VolumeGetter is an interface for getting a list of persistent volume information
@@ -96,6 +104,12 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 			// powerflex will provide storagesystem id and powerstore will provide array IP
 			if info.StorageSystem == "" || len(info.StorageSystem) == 0 {
 				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayID"]
+			}
+
+			// set StoregeSystem and Protocol for PowerScale
+			if strings.Contains(info.Driver, CsiDriverNamePowerScale) {
+				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["ClusterName"] + ":" + volume.Spec.CSI.VolumeAttributes["AccessZone"]
+				info.Protocol = ProtocolNfs
 			}
 
 			// powerstore volume do not have storage pool unlike powerflex
