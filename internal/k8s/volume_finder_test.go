@@ -213,6 +213,40 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 							Phase: "Bound",
 						},
 					},
+					{ // powerscale pvc object
+						ObjectMeta: metav1.ObjectMeta{
+							Name:              "persistent-volume-name-3",
+							CreationTimestamp: metav1.Time{Time: t1},
+						},
+						Spec: corev1.PersistentVolumeSpec{
+							Capacity: map[corev1.ResourceName]resource.Quantity{
+								v1.ResourceStorage: resource.MustParse("16Gi"),
+							},
+							PersistentVolumeSource: corev1.PersistentVolumeSource{
+								CSI: &corev1.CSIPersistentVolumeSource{
+									Driver: "csi-isilon.dellemc.com",
+									VolumeAttributes: map[string]string{
+										"Name":              "persistent-volume-name-3",
+										"AccessZone":        "System",
+										"AzServiceIP":       "10.0.0.1",
+										"ClusterName":       "pieisi93x",
+										"ID":                "15",
+										"Path":              "/ifs/data/csi/persistent-volume-name-3",
+										"RootClientEnabled": "false",
+									},
+								},
+							},
+							ClaimRef: &corev1.ObjectReference{
+								Name:      "pvc-name-3",
+								Namespace: "namespace-3",
+								UID:       "pvc-uid-3",
+							},
+							StorageClassName: "storage-class-name-3",
+						},
+						Status: corev1.PersistentVolumeStatus{
+							Phase: "Bound",
+						},
+					},
 				},
 			}
 
@@ -220,7 +254,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 
 			finder := k8s.VolumeFinder{
 				API:         api,
-				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com"},
+				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com", "csi-isilon.dellemc.com"},
 				Logger:      logrus.New(),
 			}
 			return finder, check(hasNoError, checkExpectedOutput([]k8s.VolumeInfo{
@@ -250,6 +284,21 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 					StoragePoolName:         "N/A",
 					StorageSystem:           "1.0.1.1",
 					Protocol:                "scsi",
+					CreatedTime:             t1.String(),
+				},
+				{
+					Namespace:               "namespace-3",
+					PersistentVolumeClaim:   "pvc-uid-3",
+					PersistentVolumeStatus:  "Bound",
+					VolumeClaimName:         "pvc-name-3",
+					PersistentVolume:        "persistent-volume-name-3",
+					StorageClass:            "storage-class-name-3",
+					Driver:                  "csi-isilon.dellemc.com",
+					ProvisionedSize:         "16Gi",
+					StorageSystemVolumeName: "persistent-volume-name-3",
+					StoragePoolName:         "N/A",
+					StorageSystem:           "pieisi93x:System",
+					Protocol:                "nfs",
 					CreatedTime:             t1.String(),
 				},
 			})), ctrl
