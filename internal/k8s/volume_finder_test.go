@@ -228,7 +228,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 									VolumeAttributes: map[string]string{
 										"Name":              "persistent-volume-name-3",
 										"AccessZone":        "System",
-										"AzServiceIP":       "10.0.0.1",
+										"AzServiceIP":       "192.0.0.1",
 										"ClusterName":       "pieisi93x",
 										"ID":                "15",
 										"Path":              "/ifs/data/csi/persistent-volume-name-3",
