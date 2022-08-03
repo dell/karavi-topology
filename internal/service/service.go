@@ -243,6 +243,7 @@ func supportedColumnPair(volume k8s.VolumeInfo) map[string]string {
 		"CSI Driver":     volume.Driver,
 		"Storage Pool":   volume.StoragePoolName,
 		"Storage System": volume.StorageSystem,
+		"Storage Class":  volume.StorageClass,
 	}
 }
 func canAddRow(volume k8s.VolumeInfo, lookUp []map[string]string) bool {
