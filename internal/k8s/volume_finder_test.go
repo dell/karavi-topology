@@ -247,6 +247,32 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 							Phase: "Bound",
 						},
 					},
+					{ // non-CSI PV
+						ObjectMeta: metav1.ObjectMeta{
+							Name:              "persistent-volume-name-3",
+							CreationTimestamp: metav1.Time{Time: t1},
+						},
+						Spec: corev1.PersistentVolumeSpec{
+							Capacity: map[corev1.ResourceName]resource.Quantity{
+								v1.ResourceStorage: resource.MustParse("16Gi"),
+							},
+							PersistentVolumeSource: corev1.PersistentVolumeSource{
+								NFS: &corev1.NFSVolumeSource{
+									Server: "nas-server",
+									Path:   "file-path",
+								},
+							},
+							ClaimRef: &corev1.ObjectReference{
+								Name:      "pvc-name-4",
+								Namespace: "namespace-4",
+								UID:       "pvc-uid-4",
+							},
+							StorageClassName: "storage-class-name-4",
+						},
+						Status: corev1.PersistentVolumeStatus{
+							Phase: "Bound",
+						},
+					},
 				},
 			}
 
