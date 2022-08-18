@@ -75,7 +75,7 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 	}
 
 	for _, volume := range volumes.Items {
-		if Contains(f.DriverNames, volume.Spec.CSI.Driver) {
+		if volume.Spec.CSI != nil && Contains(f.DriverNames, volume.Spec.CSI.Driver) {
 			capacity := volume.Spec.Capacity[v1.ResourceStorage]
 			claim := volume.Spec.ClaimRef
 			status := volume.Status
