@@ -29,6 +29,7 @@ const (
 )
 
 // VolumeGetter is an interface for getting a list of persistent volume information
+//
 //go:generate mockgen -destination=mocks/volume_getter_mocks.go -package=mocks github.com/dell/karavi-topology/internal/k8s VolumeGetter
 type VolumeGetter interface {
 	GetPersistentVolumes() (*corev1.PersistentVolumeList, error)
