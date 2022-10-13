@@ -10,11 +10,14 @@ package service
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/sirupsen/logrus"
@@ -61,7 +64,33 @@ func (s *Service) Run() error {
 	if s.Port == 0 {
 		s.Port = port
 	}
-	return http.ListenAndServeTLS(fmt.Sprintf(":%d", s.Port), s.CertFile, s.KeyFile, s.Routes())
+
+	cert, err := tls.LoadX509KeyPair(s.CertFile, s.KeyFile)
+	if err != nil {
+		return fmt.Errorf("tls.LoadX509KeyPair(%s, %s) failed: ", s.CertFile, s.KeyFile)
+	}
+
+	addr := fmt.Sprintf(":%d", s.Port)
+	config := &tls.Config{
+		Certificates: []tls.Certificate{cert},
+		MinVersion:   tls.VersionTLS12,
+	}
+
+	server := &http.Server{
+		Addr:              addr,
+		ReadHeaderTimeout: 5 * time.Second,
+		Handler:           s.Routes(),
+		TLSConfig:         config,
+	}
+
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		return fmt.Errorf("failed to listen on tcp port %d", s.Port)
+	}
+	defer ln.Close()
+	tlsListener := tls.NewListener(ln, config)
+
+	return server.Serve(tlsListener)
 }
 
 // Routes contains the list of routes for the service
