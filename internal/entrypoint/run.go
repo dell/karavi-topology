@@ -13,6 +13,7 @@ import (
 )
 
 // ServiceRunner is an interface of a service that can be run
+//
 //go:generate mockgen -destination=mocks/service_runner_mocks.go -package=mocks github.com/dell/karavi-topology/internal/entrypoint ServiceRunner
 type ServiceRunner interface {
 	Run() error
