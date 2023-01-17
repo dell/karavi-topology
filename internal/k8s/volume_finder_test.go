@@ -255,6 +255,37 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 							Phase: "Bound",
 						},
 					},
+					{ // powermax pvc object
+						ObjectMeta: metav1.ObjectMeta{
+							Name:              "persistent-volume-name-4",
+							CreationTimestamp: metav1.Time{Time: t1},
+						},
+						Spec: corev1.PersistentVolumeSpec{
+							Capacity: map[corev1.ResourceName]resource.Quantity{
+								v1.ResourceStorage: resource.MustParse("8390400Ki"),
+							},
+							PersistentVolumeSource: corev1.PersistentVolumeSource{
+								CSI: &corev1.CSIPersistentVolumeSource{
+									Driver:       "csi-powermax.dellemc.com",
+									VolumeHandle: "csi-ZYA-pmax-4723028a00-powermax-000120000606-0012D",
+									VolumeAttributes: map[string]string{
+										"SRP":            "SRP_1",
+										"powermax/SYMID": "000120000606",
+										"CreationTime":   "20221128061234",
+									},
+								},
+							},
+							ClaimRef: &corev1.ObjectReference{
+								Name:      "pvc-name-4",
+								Namespace: "namespace-4",
+								UID:       "pvc-uid-4",
+							},
+							StorageClassName: "storage-class-name-4",
+						},
+						Status: corev1.PersistentVolumeStatus{
+							Phase: "Bound",
+						},
+					},
 					{ // non-CSI PV
 						ObjectMeta: metav1.ObjectMeta{
 							Name:              "persistent-volume-name-3",
@@ -288,7 +319,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 
 			finder := k8s.VolumeFinder{
 				API:         api,
-				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com", "csi-isilon.dellemc.com"},
+				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com", "csi-isilon.dellemc.com", "csi-powermax.dellemc.com"},
 				Logger:      logrus.New(),
 			}
 			return finder, check(hasNoError, checkExpectedOutput([]k8s.VolumeInfo{
@@ -333,6 +364,21 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 					StoragePoolName:         "N/A",
 					StorageSystem:           "pieisi93x:System",
 					Protocol:                "nfs",
+					CreatedTime:             t1.String(),
+				},
+				{
+					Namespace:               "namespace-4",
+					PersistentVolumeClaim:   "pvc-uid-4",
+					PersistentVolumeStatus:  "Bound",
+					VolumeClaimName:         "pvc-name-4",
+					PersistentVolume:        "persistent-volume-name-4",
+					StorageClass:            "storage-class-name-4",
+					Driver:                  "csi-powermax.dellemc.com",
+					ProvisionedSize:         "8390400Ki",
+					StorageSystemVolumeName: "0012D:csi-ZYA-pmax-4723028a00-powermax",
+					StoragePoolName:         "SRP_1",
+					StorageSystem:           "000120000606",
+					Protocol:                "N/A",
 					CreatedTime:             t1.String(),
 				},
 			})), ctrl

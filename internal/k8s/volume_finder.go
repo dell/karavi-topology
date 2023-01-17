@@ -34,6 +34,8 @@ const (
 	ProtocolNfs = "nfs"
 	// CsiDriverNamePowerScale CSI PowerScale Name
 	CsiDriverNamePowerScale = "isilon"
+	// CsiDriverNamePowerMax CSI PowerMax Name
+	CsiDriverNamePowerMax = "powermax"
 )
 
 // VolumeGetter is an interface for getting a list of persistent volume information
@@ -88,6 +90,7 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 			capacity := volume.Spec.Capacity[v1.ResourceStorage]
 			claim := volume.Spec.ClaimRef
 			status := volume.Status
+			volumeHandle := volume.Spec.CSI.VolumeHandle
 
 			f.Logger.WithField("volume_attributes", volume.Spec.CSI.VolumeAttributes).Debug("volumefinder volumes attributes map")
 			info := VolumeInfo{
@@ -121,6 +124,16 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 				info.Protocol = ProtocolNfs
 			}
 
+			// set attributes for PowerMax
+			if strings.Contains(info.Driver, CsiDriverNamePowerMax) {
+				info.StorageSystemVolumeName = parsePowerMaxVolumeName(volumeHandle)
+				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["powermax/SYMID"]
+				info.StoragePoolName = volume.Spec.CSI.VolumeAttributes["SRP"]
+				if info.Protocol == "" {
+					info.Protocol = "N/A"
+				}
+			}
+
 			// powerstore volume do not have storage pool unlike powerflex
 			if info.StoragePoolName == "" || len(info.StoragePoolName) == 0 {
 				info.StoragePoolName = "N/A"
@@ -130,6 +143,16 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 		}
 	}
 	return volumeInfo, nil
+}
+
+// parsePowerMaxVolumeName parse PowerMax PV volumeHandle and return storage volume name
+func parsePowerMaxVolumeName(volumeHandle string) string {
+	ele := strings.Split(volumeHandle, "-")
+	if len(ele) == 7 {
+		return fmt.Sprintf("%s:%s", ele[6], strings.Join(ele[0:5], "-"))
+	}
+
+	return volumeHandle
 }
 
 // Contains will return true if the slice contains the given value
