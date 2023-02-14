@@ -96,7 +96,12 @@ func (s *Service) Run() error {
 	if err != nil {
 		return fmt.Errorf("failed to listen on tcp port %d", s.Port)
 	}
-	defer ln.Close()
+	defer func(ln net.Listener) {
+		err := ln.Close()
+		if err != nil {
+			s.Logger.WithError(err).Error("failed to close listener")
+		}
+	}(ln)
 	tlsListener := tls.NewListener(ln, config)
 
 	return server.Serve(tlsListener)
