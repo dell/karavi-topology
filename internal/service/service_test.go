@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2020-2022 Dell Inc. or its subsidiaries. All Rights Reserved.
+ Copyright (c) 2020-2023 Dell Inc. or its subsidiaries. All Rights Reserved.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -110,7 +109,7 @@ func TestSearchHandler(t *testing.T) {
 		return func(t *testing.T, response *http.Response, err error) {
 			assert.Nil(t, err)
 
-			body, err := ioutil.ReadAll(response.Body)
+			body, err := io.ReadAll(response.Body)
 			assert.Nil(t, err)
 
 			var result []string
@@ -493,7 +492,7 @@ func TestQueryHandler(t *testing.T) {
 			defer teardown()
 
 			res, err := http.Post(ctx.server.URL+"/query", "application/json", body)
-			resBody, errB := ioutil.ReadAll(res.Body)
+			resBody, errB := io.ReadAll(res.Body)
 			assert.Nil(t, errB)
 
 			for _, checkFn := range checkFns {

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2021-2022 Dell Inc. or its subsidiaries. All Rights Reserved.
+ Copyright (c) 2021-2023 Dell Inc. or its subsidiaries. All Rights Reserved.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package tracer
 import (
 	"context"
 	"errors"
-	"io/ioutil"
+	"io"
 	"strings"
 
 	"go.opentelemetry.io/otel"
@@ -37,7 +37,7 @@ func InitTracing(uri string, prob float64) (trace.TracerProvider, error) {
 	}
 	exporter, err := zipkin.New(
 		uri,
-		zipkin.WithLogger(stdLog.New(ioutil.Discard, "", stdLog.LstdFlags)),
+		zipkin.WithLogger(stdLog.New(io.Discard, "", stdLog.LstdFlags)),
 	)
 	if err != nil {
 		return nil, err
