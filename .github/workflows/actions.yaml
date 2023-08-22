@@ -73,10 +73,7 @@ jobs:
         run:  go mod download
       - name: Build csm-topology Docker Image
         run: make clean build docker  
-      - name: Image scanner
-        uses: Azure/container-scan@v0
+      - name: Run Trivy action
+        uses: aquasecurity/trivy-action@master
         with:
-          image-name: csm-topology
-          severity-threshold: HIGH
-        env:
-          DOCKLE_HOST: "unix:///var/run/docker.sock"
+          image-ref: csm-topology
