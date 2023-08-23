@@ -58,7 +58,6 @@ func Test_GetPersistentVolumes(t *testing.T) {
 
 	tests := map[string]func(t *testing.T) (connectFn, configFn, []checkFn){
 		"success": func(*testing.T) (connectFn, configFn, []checkFn) {
-
 			volumes := &corev1.PersistentVolumeList{
 				Items: []corev1.PersistentVolume{
 					{
@@ -107,7 +106,6 @@ func Test_GetPersistentVolumes(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func Test_InClusterConfigFn(t *testing.T) {

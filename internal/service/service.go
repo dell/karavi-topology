@@ -20,18 +20,17 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"expvar"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	"strings"
 	"time"
 
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/sirupsen/logrus"
-
-	"expvar"
-	"net/http/pprof"
 
 	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/gorilla/mux"
@@ -135,12 +134,11 @@ func (s *Service) logHandler(h func(http.ResponseWriter, *http.Request)) func(ht
 	return http.HandlerFunc(fn)
 }
 
-func (s *Service) rootRequest(w http.ResponseWriter, r *http.Request) {
+func (s *Service) rootRequest(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
 func (s *Service) searchRequest(w http.ResponseWriter, r *http.Request) {
-
 	write := func(out []byte) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		_, err := HTTPWrite(&w, []byte(out))
@@ -149,7 +147,6 @@ func (s *Service) searchRequest(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-
 	}
 
 	ctx, span := tracer.GetTracer(context.Background(), "GetPersistentVolumes")
@@ -289,6 +286,7 @@ func supportedColumnPair(volume k8s.VolumeInfo) map[string]string {
 		"Storage Class":  volume.StorageClass,
 	}
 }
+
 func canAddRow(volume k8s.VolumeInfo, lookUp []map[string]string) bool {
 	canADD := true
 	filter := supportedColumnPair(volume)
@@ -312,8 +310,10 @@ func generateVolumeTableJSON(volumes []k8s.VolumeInfo, lookUp []map[string]strin
 	table.Rows = make([][]string, 0)
 	for _, volume := range volumes {
 		if canAddRow(volume, lookUp) {
-			table.Rows = append(table.Rows, []string{volume.Namespace, volume.PersistentVolume, volume.PersistentVolumeStatus, volume.VolumeClaimName, volume.Driver, volume.CreatedTime,
-				volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName, volume.StorageSystem, volume.Protocol})
+			table.Rows = append(table.Rows, []string{
+				volume.Namespace, volume.PersistentVolume, volume.PersistentVolumeStatus, volume.VolumeClaimName, volume.Driver, volume.CreatedTime,
+				volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName, volume.StorageSystem, volume.Protocol,
+			})
 		}
 	}
 	return []*TableResponse{table}

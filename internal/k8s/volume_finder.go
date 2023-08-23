@@ -71,7 +71,6 @@ type VolumeInfo struct {
 
 // GetPersistentVolumes will return a list of persistent volume information
 func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, error) {
-
 	ctx, span := tracer.GetTracer(ctx, "GetPersistentVolumes")
 	defer span.End()
 
