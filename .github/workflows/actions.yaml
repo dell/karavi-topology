@@ -60,10 +60,10 @@ jobs:
     name: Image Scanner
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.20+
+      - name: Set up Go 1.21+
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.20
+          go-version: ^1.21
         id: go
       - name: Checkout the code
         uses: actions/checkout@v2
@@ -72,7 +72,7 @@ jobs:
       - name: Get dependencies
         run:  go mod download
       - name: Build csm-topology Docker Image
-        run: make clean build docker  
+        run: make clean build docker
       - name: Run Trivy action
         uses: aquasecurity/trivy-action@master
         with:
