@@ -80,7 +80,6 @@ func TestRootHandler(t *testing.T) {
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-
 			checkFns := tc(t)
 
 			ctx, teardown := setup(nil)
@@ -151,7 +150,7 @@ func TestSearchHandler(t *testing.T) {
 
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
-			var jsonStr = []byte(`{"target":"Namespace"}`)
+			jsonStr := []byte(`{"target":"Namespace"}`)
 			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedList)), bytes.NewBuffer(jsonStr)
 		},
 		"success without body": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
@@ -170,7 +169,6 @@ func TestSearchHandler(t *testing.T) {
 			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedList)), http.NoBody
 		},
 		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
-
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -247,7 +245,6 @@ func TestSearchHandler(t *testing.T) {
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-
 			volumeFinder, patch, checkFns, body := tc(t)
 
 			if patch.marshalFn != nil {
@@ -316,10 +313,9 @@ func TestQueryHandler(t *testing.T) {
 				assert.Equal(t, driver, v[4])                  // CSI Driver index is 4
 				assert.True(t, strings.Contains(status, v[2])) // Status index is 2
 			}
-
 		}
 	}
-	var testJSON = []byte(`
+	testJSON := []byte(`
 		{
 			"app":"dashboard",
 			"requestId":"Q107",
@@ -336,7 +332,6 @@ func TestQueryHandler(t *testing.T) {
 
 	tests := map[string]func(t *testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader){
 		"success": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
-
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -378,7 +373,6 @@ func TestQueryHandler(t *testing.T) {
 			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows), hasExpectedNamespacesDriver("ns-1", "powerstore", "(Bound|Pending)")), bytes.NewBuffer(testJSON)
 		},
 		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
-
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 
@@ -387,7 +381,6 @@ func TestQueryHandler(t *testing.T) {
 			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusInternalServerError)), nil
 		},
 		"error marshalling response": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
-
 			ctrl := gomock.NewController(t)
 			volumeFinder := mocks.NewMockVolumeInfoGetter(ctrl)
 			volumeInfo := []k8s.VolumeInfo{
@@ -464,7 +457,6 @@ func TestQueryHandler(t *testing.T) {
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-
 			volumeFinder, patch, checkFns, body := tc(t)
 
 			if patch.marshalFn != nil {
@@ -536,7 +528,6 @@ func TestHttpServerStartup(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-
 			certFile, keyFile, port, checkFns, expectError := tc(t)
 
 			ctx, teardown := setup(nil)

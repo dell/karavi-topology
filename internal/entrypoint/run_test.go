@@ -30,7 +30,6 @@ import (
 
 func Test_Run(t *testing.T) {
 	tests := map[string]func(t *testing.T) (expectError bool, svc entrypoint.ServiceRunner, ctrl *gomock.Controller){
-
 		"success": func(*testing.T) (bool, entrypoint.ServiceRunner, *gomock.Controller) {
 			ctrl := gomock.NewController(t)
 			svc := mocks.NewMockServiceRunner(ctrl)
