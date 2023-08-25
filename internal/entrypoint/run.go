@@ -29,7 +29,6 @@ type ServiceRunner interface {
 
 // Run is the entrypoint to starting the service
 func Run(ctx context.Context, service ServiceRunner) error {
-
 	errCh := make(chan error, 1)
 
 	go func() {

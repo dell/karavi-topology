@@ -40,7 +40,6 @@ const (
 )
 
 func main() {
-
 	logger := logrus.New()
 
 	// enable viper to get properties from environment variables or default configuration file
@@ -151,7 +150,8 @@ func updateTracing(logger *logrus.Logger) {
 		return
 	}
 
-	logger.WithFields(logrus.Fields{"uri": zipkinURI,
+	logger.WithFields(logrus.Fields{
+		"uri":          zipkinURI,
 		"service_name": zipkinServiceName,
 		"probablity":   zipkinProbability,
 	}).Infof("setting zipkin tracing")

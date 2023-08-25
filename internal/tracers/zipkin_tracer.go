@@ -47,7 +47,7 @@ func InitTracing(uri string, prob float64) (trace.TracerProvider, error) {
 		sdktrace.WithBatcher(
 			exporter,
 			sdktrace.WithMaxExportBatchSize(sdktrace.DefaultMaxExportBatchSize),
-			sdktrace.WithBatchTimeout(sdktrace.DefaultBatchTimeout),
+			sdktrace.WithBatchTimeout(sdktrace.DefaultExportTimeout),
 			sdktrace.WithMaxExportBatchSize(sdktrace.DefaultMaxExportBatchSize),
 		),
 	)
