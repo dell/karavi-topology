@@ -133,6 +133,14 @@ func (f VolumeFinder) GetPersistentVolumes(ctx context.Context) ([]VolumeInfo, e
 				}
 			}
 
+			// set attributes for Unity XT
+			if strings.Contains(info.Driver, "unity") {
+				if info.Protocol == "" {
+					info.Protocol = volume.Spec.CSI.VolumeAttributes["protocol"]
+				}
+				info.StorageSystem = volume.Spec.CSI.VolumeAttributes["arrayId"]
+			}
+
 			// powerstore volume do not have storage pool unlike powerflex
 			if info.StoragePoolName == "" || len(info.StoragePoolName) == 0 {
 				info.StoragePoolName = "N/A"

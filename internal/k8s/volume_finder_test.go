@@ -284,6 +284,38 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 							Phase: "Bound",
 						},
 					},
+					{ // unity pvc object
+						ObjectMeta: metav1.ObjectMeta{
+							Name:              "persistent-volume-name-5",
+							CreationTimestamp: metav1.Time{Time: t1},
+						},
+						Spec: corev1.PersistentVolumeSpec{
+							Capacity: map[corev1.ResourceName]resource.Quantity{
+								v1.ResourceStorage: resource.MustParse("5Gi"),
+							},
+							PersistentVolumeSource: corev1.PersistentVolumeSource{
+								CSI: &corev1.CSIPersistentVolumeSource{
+									Driver:       "csi-unity.dellemc.com",
+									VolumeHandle: "csivol-854ee7499d-iSCSI-apm00213404195-sv_331978",
+									VolumeAttributes: map[string]string{
+										"arrayId":  "apm00213404195",
+										"protocol": "iSCSI",
+										"storage.kubernetes.io/csiProvisionerIdentity": "1693552116871-9631-csi-unity.dellemc.com",
+										"volumeId": "sv_331978",
+									},
+								},
+							},
+							ClaimRef: &corev1.ObjectReference{
+								Name:      "pvc-name-5",
+								Namespace: "namespace-5",
+								UID:       "pvc-uid-5",
+							},
+							StorageClassName: "storage-class-name-5",
+						},
+						Status: corev1.PersistentVolumeStatus{
+							Phase: "Bound",
+						},
+					},
 					{ // non-CSI PV
 						ObjectMeta: metav1.ObjectMeta{
 							Name:              "persistent-volume-name-3",
@@ -317,7 +349,7 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 
 			finder := k8s.VolumeFinder{
 				API:         api,
-				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com", "csi-isilon.dellemc.com", "csi-powermax.dellemc.com"},
+				DriverNames: []string{"csi-vxflexos.dellemc.com", "another-csi-driver.dellemc.com", "csi-isilon.dellemc.com", "csi-powermax.dellemc.com", "csi-unity.dellemc.com"},
 				Logger:      logrus.New(),
 			}
 			return finder, check(hasNoError, checkExpectedOutput([]k8s.VolumeInfo{
@@ -377,6 +409,21 @@ func Test_K8sPersistentVolumeFinder(t *testing.T) {
 					StoragePoolName:         "SRP_1",
 					StorageSystem:           "000120000606",
 					Protocol:                "N/A",
+					CreatedTime:             t1.String(),
+				},
+				{
+					Namespace:               "namespace-5",
+					PersistentVolumeClaim:   "pvc-uid-5",
+					PersistentVolumeStatus:  "Bound",
+					VolumeClaimName:         "pvc-name-5",
+					PersistentVolume:        "persistent-volume-name-5",
+					StorageClass:            "storage-class-name-5",
+					Driver:                  "csi-unity.dellemc.com",
+					ProvisionedSize:         "5Gi",
+					StorageSystemVolumeName: "persistent-volume-name-5",
+					StoragePoolName:         "N/A",
+					StorageSystem:           "apm00213404195",
+					Protocol:                "iSCSI",
 					CreatedTime:             t1.String(),
 				},
 			})), ctrl
