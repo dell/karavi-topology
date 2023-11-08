@@ -31,8 +31,9 @@ test:
 	go test -count=1 -cover -race -timeout 30s -short ./...
 
 .PHONY: docker
-docker:
-	SERVICE=cmd/topology docker build -t csm-topology -f Dockerfile cmd/topology
+docker: download-csm-common
+	$(eval include csm-common.mk)
+	SERVICE=cmd/topology docker build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(DEFAULT_BASEIMAGE) cmd/topology
 
 .PHONY: tag
 tag:
@@ -46,3 +47,6 @@ push:
 check:
 	./scripts/check.sh ./cmd/... ./internal/...
 
+.PHONY: download-csm-common
+download-csm-common:
+	curl -O -L https://raw.githubusercontent.com/dell/csm/main/config/csm-common.mk
