@@ -33,7 +33,7 @@ test:
 .PHONY: docker
 docker: download-csm-common
 	$(eval include csm-common.mk)
-	docker build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(DEFAULT_BASEIMAGE) .
+	docker build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(DEFAULT_BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
 .PHONY: tag
 tag:
