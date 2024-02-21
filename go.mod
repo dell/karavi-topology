@@ -1,6 +1,6 @@
 module github.com/dell/karavi-topology
 
-go 1.21
+go 1.22
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0
