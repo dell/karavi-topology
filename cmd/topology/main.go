@@ -86,7 +86,7 @@ func main() {
 	updateTracing(logger)
 
 	viper.WatchConfig()
-	viper.OnConfigChange(func(e fsnotify.Event) {
+	viper.OnConfigChange(func(_ fsnotify.Event) {
 		logger.WithField("file", defaultConfigFile).Info("configuration file changed")
 		updateDriverNames(volumeFinder)
 		updateLoggingSettings(logger)

@@ -98,7 +98,7 @@ func TestSearchHandler(t *testing.T) {
 	check := func(fns ...checkFn) []checkFn { return fns }
 
 	hasExpectedStatusCode := func(expectedStatus int) func(t *testing.T, response *http.Response, err error) {
-		return func(t *testing.T, response *http.Response, err error) {
+		return func(t *testing.T, response *http.Response, _ error) {
 			assert.NotNil(t, response)
 			assert.Equal(t, expectedStatus, response.StatusCode)
 		}
@@ -189,7 +189,7 @@ func TestSearchHandler(t *testing.T) {
 				},
 			}
 			patch := testOverrides{
-				marshalFn: func(v interface{}) ([]byte, error) {
+				marshalFn: func(_ interface{}) ([]byte, error) {
 					return nil, errors.New("error")
 				},
 			}
@@ -211,7 +211,7 @@ func TestSearchHandler(t *testing.T) {
 				},
 			}
 			patch := testOverrides{
-				decodeBodyFn: func(body io.Reader, v interface{}) error {
+				decodeBodyFn: func(_ io.Reader, _ interface{}) error {
 					return errors.New("error")
 				},
 			}
@@ -235,7 +235,7 @@ func TestSearchHandler(t *testing.T) {
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
 			patch := testOverrides{
-				httpWrite: func(w *http.ResponseWriter, data []byte) (int, error) {
+				httpWrite: func(_ *http.ResponseWriter, _ []byte) (int, error) {
 					return 0, errors.New("error")
 				},
 			}
@@ -280,7 +280,7 @@ func TestQueryHandler(t *testing.T) {
 	check := func(fns ...checkFn) []checkFn { return fns }
 
 	hasExpectedStatusCode := func(expectedStatus int) func(t *testing.T, body []byte, statusCode int, err error) {
-		return func(t *testing.T, body []byte, statusCode int, err error) {
+		return func(t *testing.T, _ []byte, statusCode int, _ error) {
 			assert.Equal(t, expectedStatus, statusCode)
 		}
 	}
@@ -391,7 +391,7 @@ func TestQueryHandler(t *testing.T) {
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
 			patch := testOverrides{
-				marshalFn: func(v interface{}) ([]byte, error) {
+				marshalFn: func(_ interface{}) ([]byte, error) {
 					return nil, errors.New("error")
 				},
 			}
@@ -408,7 +408,7 @@ func TestQueryHandler(t *testing.T) {
 				},
 			}
 			patch := testOverrides{
-				decodeBodyFn: func(body io.Reader, v interface{}) error {
+				decodeBodyFn: func(_ io.Reader, _ interface{}) error {
 					return errors.New("error")
 				},
 			}
@@ -426,7 +426,7 @@ func TestQueryHandler(t *testing.T) {
 				},
 			}
 			patch := testOverrides{
-				unMarshalFn: func(_ []byte, v interface{}) error {
+				unMarshalFn: func(_ []byte, _ interface{}) error {
 					return errors.New("error")
 				},
 			}
@@ -445,7 +445,7 @@ func TestQueryHandler(t *testing.T) {
 				},
 			}
 			patch := testOverrides{
-				httpWrite: func(w *http.ResponseWriter, data []byte) (int, error) {
+				httpWrite: func(_ *http.ResponseWriter, _ []byte) (int, error) {
 					return 0, errors.New("error")
 				},
 			}
