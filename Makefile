@@ -30,10 +30,17 @@ generate:
 test:
 	go test -count=1 -cover -race -timeout 30s -short ./...
 
-.PHONY: docker
-docker: download-csm-common
+.PHONY: build-base-image
+build-base-image: download-csm-common
 	$(eval include csm-common.mk)
-	docker build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(DEFAULT_BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
+	@echo "Building base image from $(DEFAULT_BASEIMAGE) and loading dependencies..."
+	./scripts/build_ubi_micro.sh $(DEFAULT_BASEIMAGE)
+	@echo "Base image build: SUCCESS"
+	$(eval BASEIMAGE=topology-ubimicro:latest)
+
+.PHONY: docker
+docker: build-base-image
+	docker build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
 .PHONY: tag
 tag:
