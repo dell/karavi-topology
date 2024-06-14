@@ -81,9 +81,9 @@ func (s *Service) Run() error {
 	addr := fmt.Sprintf(":%d", s.Port)
 	config := &tls.Config{
 		Certificates: []tls.Certificate{cert},
-		MinVersion:         tls.VersionTLS12,
-		MaxVersion:         tls.VersionTLS13,
-		CipherSuites:       GetSecuredCipherSuites(),
+		MinVersion:   tls.VersionTLS12,
+		MaxVersion:   tls.VersionTLS13,
+		CipherSuites: GetSecuredCipherSuites(),
 	}
 
 	server := &http.Server{
