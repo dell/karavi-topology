@@ -18,6 +18,7 @@ package service_test
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"io"
@@ -542,5 +543,25 @@ func TestHttpServerStartup(t *testing.T) {
 				checkFn(t, expectError, err)
 			}
 		})
+	}
+}
+
+func TestGetSecuredCipherSuites(t *testing.T) {
+	expectedSuites := tls.CipherSuites()
+	expectedIDs := make([]uint16, len(expectedSuites))
+	for i, suite := range expectedSuites {
+		expectedIDs[i] = suite.ID
+	}
+
+	got := service.GetSecuredCipherSuites()
+
+	if len(got) != len(expectedIDs) {
+		t.Fatalf("Expected %d cipher suites, but got %d", len(expectedIDs), len(got))
+	}
+
+	for i, id := range expectedIDs {
+		if got[i] != id {
+			t.Errorf("Expected cipher suite ID %x at index %d, but got %x", id, i, got[i])
+		}
 	}
 }
