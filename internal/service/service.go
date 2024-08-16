@@ -82,6 +82,8 @@ func (s *Service) Run() error {
 	config := &tls.Config{
 		Certificates: []tls.Certificate{cert},
 		MinVersion:   tls.VersionTLS12,
+		MaxVersion:   tls.VersionTLS13,
+		CipherSuites: GetSecuredCipherSuites(),
 	}
 
 	server := &http.Server{
@@ -325,4 +327,13 @@ func generateColumns(columns ...string) []map[string]string {
 		result = append(result, map[string]string{"text": column, "type": "string"})
 	}
 	return result
+}
+
+// GetSecuredCipherSuites returns a set of secure cipher suites.
+func GetSecuredCipherSuites() (suites []uint16) {
+	securedSuite := tls.CipherSuites()
+	for _, v := range securedSuite {
+		suites = append(suites, v.ID)
+	}
+	return suites
 }
