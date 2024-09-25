@@ -41,7 +41,7 @@ build-base-image: download-csm-common
 # Pre-requisites: RHEL, buildah, podman
 .PHONY: podman
 podman: build-base-image
-	podman build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
+	podman build $(NOCACHE) -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
 .PHONY: podman-no-cache
 podman-no-cache:
