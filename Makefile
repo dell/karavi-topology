@@ -43,9 +43,9 @@ build-base-image: download-csm-common
 podman: build-base-image
 	podman build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
-.PHONY: docker-no-cache
-docker-no-cache:
-	@make docker NOCACHE="--no-cache"
+.PHONY: podman-no-cache
+podman-no-cache:
+	@make podman NOCACHE="--no-cache"
 
 .PHONY: tag
 tag:
