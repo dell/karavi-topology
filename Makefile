@@ -7,9 +7,9 @@ help:
 	@echo
 	@echo "build    - Builds the code locally"
 	@echo "clean    - Cleans the local build"
-	@echo "docker   - Builds Docker image"
-	@echo "tag      - Tags Docker image"
-	@echo "push     - Pushes Docker image to a registry"
+	@echo "podman   - Builds Podman image"
+	@echo "tag      - Tags Podman image"
+	@echo "push     - Pushes Podman image to a registry"
 	@echo "check    - Runs code checking tools: lint, format, gosec, and vet"
 	@echo "test     - Runs the unit tests"
 	@echo
@@ -38,9 +38,10 @@ build-base-image: download-csm-common
 	@echo "Base image build: SUCCESS"
 	$(eval BASEIMAGE=topology-ubimicro:latest)
 
-.PHONY: docker
-docker: build-base-image
-	docker build $(NOCACHE) -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
+# Pre-requisites: RHEL, buildah, podman
+.PHONY: podman
+podman: build-base-image
+	podman build -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
 .PHONY: docker-no-cache
 docker-no-cache:
@@ -48,11 +49,11 @@ docker-no-cache:
 
 .PHONY: tag
 tag:
-	docker tag csm-topology:latest ${DOCKER_REPO}/csm-topology:latest
+	podman tag csm-topology:latest ${DOCKER_REPO}/csm-topology:latest
 
 .PHONY: push
 push:
-	docker push ${DOCKER_REPO}/csm-topology:latest
+	podman push ${DOCKER_REPO}/csm-topology:latest
 
 .PHONY: check
 check:
