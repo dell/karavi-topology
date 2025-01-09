@@ -19,11 +19,13 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /go/src/service /go/src/$APP_NAME/$CMD_
 
 # Build the sdk image
 FROM $BASEIMAGE as final
-LABEL vendor="Dell Inc." \
+LABEL vendor="Dell Technologies" \
+      maintainer="Dell Technologies" \
       name="csm-topology" \
       summary="Dell Container Storage Modules (CSM) for Observability - Metrics for Topology" \
       description="Provides Kubernetes administrators with the topology data related to containerized storage that is provisioned by CSI (Container Storage Interface) Drivers for Dell storage products" \
-      version="2.0.0" \
+      release="1.13.0" \
+      version="1.11.0" \
       license="Apache-2.0"
 
 COPY /licenses /licenses
