@@ -30,18 +30,10 @@ generate:
 test:
 	go test -count=1 -cover -race -timeout 30s -short ./...
 
-.PHONY: build-base-image
-build-base-image: download-csm-common
-	$(eval include csm-common.mk)
-	@echo "Building base image from $(DEFAULT_BASEIMAGE) and loading dependencies..."
-	./scripts/build_ubi_micro.sh $(DEFAULT_BASEIMAGE)
-	@echo "Base image build: SUCCESS"
-	$(eval BASEIMAGE=topology-ubimicro:latest)
-
-# Pre-requisites: RHEL, buildah, podman
 .PHONY: podman
-podman: build-base-image
-	podman build $(NOCACHE) -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
+podman: download-csm-common
+	$(eval include csm-common.mk)
+	podman build $(NOCACHE) -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(CSM_BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
 .PHONY: podman-no-cache
 podman-no-cache:
