@@ -33,9 +33,7 @@ jobs:
         run: go mod download
       - name: Build csm-topology Docker Image
         run: |
-          chmod +x ./scripts/build_ubi_micro.sh
-          make build-base-image
-          podman build -t docker.io/csm-topology -f ./Dockerfile --build-arg GOIMAGE=golang:latest --build-arg BASEIMAGE="localhost/topology-ubimicro"
+          podman build -t docker.io/csm-topology -f ./Dockerfile --build-arg GOIMAGE=golang:latest --build-arg BASEIMAGE="quay.io/dell/container-storage-modules/csm-base-image:nightly"
           podman save docker.io/library/csm-topology -o /tmp/csm-topology.tar
           docker load -i /tmp/csm-topology.tar
       - name: Run Trivy action
