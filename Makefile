@@ -33,7 +33,7 @@ test:
 .PHONY: podman
 podman: download-csm-common
 	$(eval include csm-common.mk)
-	podman build $(NOCACHE) -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(CSM_BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
+	podman build --pull $(NOCACHE) -t csm-topology -f Dockerfile --build-arg BASEIMAGE=$(CSM_BASEIMAGE) --build-arg GOIMAGE=$(DEFAULT_GOIMAGE) .
 
 .PHONY: podman-no-cache
 podman-no-cache:
