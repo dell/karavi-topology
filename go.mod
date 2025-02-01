@@ -2,7 +2,7 @@ module github.com/dell/karavi-topology
 
 go 1.23.0
 
-toolchain go1.23.4
+toolchain go1.23.5
 
 require (
 	github.com/fsnotify/fsnotify v1.8.0
