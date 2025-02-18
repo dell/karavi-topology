@@ -48,5 +48,4 @@ func TestGetTracer(t *testing.T) {
 	if span == nil {
 		t.Errorf("Expected non-nil span, got nil")
 	}
-
 }
