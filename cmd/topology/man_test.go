@@ -55,7 +55,7 @@ func TestMainFunction(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tt.setup()
 
-			mockEntrypointRun := func(ctx context.Context, svc entrypoint.ServiceRunner) error {
+			mockEntrypointRun := func(_ context.Context, svc entrypoint.ServiceRunner) error {
 				// Perform a type assertion
 				s, ok := svc.(*service.Service)
 				if !ok {
@@ -157,7 +157,7 @@ func TestHandleConfigChange(t *testing.T) {
 				Name: "/etc/config/karavi-topology.yaml",
 				Op:   fsnotify.Write,
 			},
-			setupConfig: func(config *ServiceConfig) {
+			setupConfig: func(_ *ServiceConfig) {
 				viper.Set("PROVISIONER_NAMES", "csi-driver-1,csi-driver-2")
 			},
 			expectedDriverNames: []string{"csi-driver-1", "csi-driver-2"},
@@ -168,7 +168,7 @@ func TestHandleConfigChange(t *testing.T) {
 				Name: "/etc/config/karavi-topology.yaml",
 				Op:   fsnotify.Write,
 			},
-			setupConfig: func(config *ServiceConfig) {
+			setupConfig: func(_ *ServiceConfig) {
 				viper.Set("PROVISIONER_NAMES", "")
 			},
 			expectedDriverNames: nil,
@@ -196,7 +196,7 @@ func TestHandleConfigChange(t *testing.T) {
 	}
 }
 
-func TestInitializeTracing(t *testing.T) {
+func TestInitializeTracing(_ *testing.T) {
 	logger := logrus.New()
 	viper.Set("ZIPKIN_URI", "http://localhost:9411")
 	viper.Set("ZIPKIN_SERVICE_NAME", "test-service")
