@@ -21,139 +21,172 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
-	"go.opentelemetry.io/otel"
-
 	"github.com/dell/karavi-topology/internal/entrypoint"
 	"github.com/dell/karavi-topology/internal/k8s"
 	"github.com/dell/karavi-topology/internal/service"
 	tracer "github.com/dell/karavi-topology/internal/tracers"
 	"github.com/fsnotify/fsnotify"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"go.opentelemetry.io/otel"
 )
 
 const (
-	port              = "443"
+	defaultConfigFile = "/etc/config/karavi-topology.yaml"
 	defaultCertFile   = "/certs/localhost.crt"
 	defaultKeyFile    = "/certs/localhost.key"
-	defaultConfigFile = "/etc/config/karavi-topology.yaml"
 )
 
+type ServiceConfig struct {
+	CertFile     string
+	KeyFile      string
+	Port         int
+	EnableDebug  bool
+	VolumeFinder *k8s.VolumeFinder
+}
+
 func main() {
-	logger := logrus.New()
+	mainWithEntrypoint(entrypoint.Run)
+}
 
-	// enable viper to get properties from environment variables or default configuration file
-	viper.AutomaticEnv()
-	viper.SetConfigFile(defaultConfigFile)
+func mainWithEntrypoint(entrypointRun func(ctx context.Context, service entrypoint.ServiceRunner) error) {
+	logger := configureLogger()
+	setupViper(logger)
+	config := initializeServiceConfig(logger)
+	setupConfigWatchers(logger, config)
+	initializeTracing(logger)
 
-	err := viper.ReadInConfig()
-	// if unable to read configuration file, proceed in case we use environment variables
-	if err != nil {
-		logger.WithError(err).Error("unable to read config file")
-	}
-
-	volumeFinder := &k8s.VolumeFinder{
-		API:    &k8s.API{},
-		Logger: logger,
-	}
-
-	updateDriverNames := func(volumeFinder *k8s.VolumeFinder) {
-		provisionerNamesValue := viper.GetString("PROVISIONER_NAMES")
-		provisionerNames := strings.Split(provisionerNamesValue, ",")
-		volumeFinder.DriverNames = provisionerNames
-		logger.WithField("driver_names", provisionerNames).Info("setting driver names")
-	}
-
-	updateLoggingSettings := func(logger *logrus.Logger) {
-		logFormat := viper.GetString("LOG_FORMAT")
-		if strings.EqualFold(logFormat, "json") {
-			logger.SetFormatter(&logrus.JSONFormatter{})
-		} else {
-			// use text formatter by default
-			logger.SetFormatter(&logrus.TextFormatter{})
-		}
-		logLevel := viper.GetString("LOG_LEVEL")
-		level, err := logrus.ParseLevel(logLevel)
-		if err != nil {
-			// use INFO level by default
-			level = logrus.InfoLevel
-		}
-		logger.SetLevel(level)
-	}
-
-	updateLoggingSettings(logger)
-	updateDriverNames(volumeFinder)
-	updateTracing(logger)
-
-	viper.WatchConfig()
-	viper.OnConfigChange(func(_ fsnotify.Event) {
-		logger.WithField("file", defaultConfigFile).Info("configuration file changed")
-		updateDriverNames(volumeFinder)
-		updateLoggingSettings(logger)
-		updateTracing(logger)
-	})
-
-	// TLS_CERT_PATH is only read as an environment variable
-	certFile := viper.GetString("TLS_CERT_PATH")
-	if len(strings.TrimSpace(certFile)) < 1 {
-		certFile = defaultCertFile
-	}
-
-	// TLS_KEY_PATH is only read as an environment variable
-	keyFile := viper.GetString("TLS_KEY_PATH")
-	if len(strings.TrimSpace(keyFile)) < 1 {
-		keyFile = defaultKeyFile
-	}
-
-	var bindPort int
-	// PORT is only read as an environment variable
-	portEnv := viper.GetString("PORT")
-	if portEnv != "" {
-		var err error
-		if bindPort, err = strconv.Atoi(portEnv); err != nil {
-			logger.WithError(err).WithField("port", portEnv).Fatal("port value is invalid")
-		}
-	}
-
-	var enableDebug bool
-	// DEBUG is only read as an environment variable
-	debugEnv := viper.GetString("DEBUG")
-	if debugEnv != "" {
-		var err error
-		if enableDebug, err = strconv.ParseBool(debugEnv); err != nil {
-			logger.WithError(err).WithField("debug", debugEnv).Fatal("debug value is invalid")
-		}
-	}
-
-	svc := &service.Service{
-		VolumeFinder: volumeFinder,
-		CertFile:     certFile,
-		KeyFile:      keyFile,
-		Port:         bindPort,
-		Logger:       logger,
-		EnableDebug:  enableDebug,
-	}
-
-	if err := entrypoint.Run(context.Background(), svc); err != nil {
-		logger.WithError(err).Fatal("running service")
+	if err := entrypointRun(context.Background(), createService(config, logger)); err != nil {
+		logger.WithError(err).Fatal("Service startup failed")
 	}
 }
 
-func updateTracing(logger *logrus.Logger) {
-	zipkinURI := viper.GetString("ZIPKIN_URI")
-	zipkinServiceName := viper.GetString("ZIPKIN_SERVICE_NAME")
-	zipkinProbability := viper.GetFloat64("ZIPKIN_PROBABILITY")
+func configureLogger() *logrus.Logger {
+	logger := logrus.New()
+	updateLogSettings(logger)
+	return logger
+}
 
-	tp, err := tracer.InitTracing(zipkinURI, zipkinProbability)
+func updateLogSettings(logger *logrus.Logger) {
+	if strings.EqualFold(viper.GetString("LOG_FORMAT"), "json") {
+		logger.SetFormatter(&logrus.JSONFormatter{})
+	} else {
+		logger.SetFormatter(&logrus.TextFormatter{})
+	}
+
+	if level, err := logrus.ParseLevel(viper.GetString("LOG_LEVEL")); err == nil {
+		logger.SetLevel(level)
+	} else {
+		logger.SetLevel(logrus.InfoLevel)
+	}
+}
+
+func setupViper(logger *logrus.Logger) {
+	viper.AutomaticEnv()
+	viper.SetConfigFile(defaultConfigFile)
+	if err := viper.ReadInConfig(); err != nil {
+		logger.WithError(err).Warn("Config file not found; using environment variables only")
+	}
+}
+
+func initializeServiceConfig(logger *logrus.Logger) *ServiceConfig {
+	return &ServiceConfig{
+		CertFile:     getEnvWithDefault("TLS_CERT_PATH", defaultCertFile),
+		KeyFile:      getEnvWithDefault("TLS_KEY_PATH", defaultKeyFile),
+		Port:         parsePort(logger),
+		EnableDebug:  parseDebugFlag(logger),
+		VolumeFinder: createVolumeFinder(logger),
+	}
+}
+
+func createVolumeFinder(logger *logrus.Logger) *k8s.VolumeFinder {
+	vf := &k8s.VolumeFinder{
+		API:    &k8s.API{},
+		Logger: logger,
+	}
+	vf.DriverNames = parseDriverNames(logger)
+	return vf
+}
+
+func parseDriverNames(logger *logrus.Logger) []string {
+	names := strings.TrimSpace(viper.GetString("PROVISIONER_NAMES"))
+	if names == "" {
+		logger.Warn("PROVISIONER_NAMES is empty; no provisioners will be used")
+		return nil
+	}
+	return strings.Split(names, ",")
+}
+
+func setupConfigWatchers(logger *logrus.Logger, config *ServiceConfig) {
+	viper.WatchConfig()
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		handleConfigChange(e, logger, config)
+	})
+}
+
+func handleConfigChange(e fsnotify.Event, logger *logrus.Logger, config *ServiceConfig) {
+	logger.WithField("file", e.Name).Info("Configuration updated")
+	updateLogSettings(logger)
+	config.VolumeFinder.DriverNames = parseDriverNames(logger)
+	initializeTracing(logger)
+}
+
+func initializeTracing(logger *logrus.Logger) {
+	zipkinConfig := struct {
+		URI         string
+		ServiceName string
+		Probability float64
+	}{
+		URI:         viper.GetString("ZIPKIN_URI"),
+		ServiceName: viper.GetString("ZIPKIN_SERVICE_NAME"),
+		Probability: viper.GetFloat64("ZIPKIN_PROBABILITY"),
+	}
+
+	tp, err := tracer.InitTracing(zipkinConfig.URI, zipkinConfig.Probability)
 	if err != nil {
-		logger.WithError(err).Error("initializing tracer")
+		logger.WithError(err).Error("Tracing initialization failed")
 		return
 	}
 
 	logger.WithFields(logrus.Fields{
-		"uri":          zipkinURI,
-		"service_name": zipkinServiceName,
-		"probablity":   zipkinProbability,
-	}).Infof("setting zipkin tracing")
+		"uri":         zipkinConfig.URI,
+		"service":     zipkinConfig.ServiceName,
+		"probability": zipkinConfig.Probability,
+	}).Info("Configured tracing")
 	otel.SetTracerProvider(tp)
+}
+
+func createService(config *ServiceConfig, logger *logrus.Logger) *service.Service {
+	return &service.Service{
+		VolumeFinder: config.VolumeFinder,
+		CertFile:     config.CertFile,
+		KeyFile:      config.KeyFile,
+		Port:         config.Port,
+		Logger:       logger,
+		EnableDebug:  config.EnableDebug,
+	}
+}
+
+func getEnvWithDefault(envVar, defaultValue string) string {
+	if value := strings.TrimSpace(viper.GetString(envVar)); value != "" {
+		return value
+	}
+	return defaultValue
+}
+
+func parsePort(logger *logrus.Logger) int {
+	if port, err := strconv.Atoi(viper.GetString("PORT")); err == nil {
+		return port
+	}
+	logger.Warn("Using default port 443")
+	return 443
+}
+
+func parseDebugFlag(logger *logrus.Logger) bool {
+	debug, err := strconv.ParseBool(viper.GetString("DEBUG"))
+	if err != nil {
+		logger.WithError(err).Warn("Invalid DEBUG value; defaulting to false")
+		return false
+	}
+	return debug
 }
