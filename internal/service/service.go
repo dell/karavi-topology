@@ -68,7 +68,7 @@ func (s *Service) Run() error {
 
 	cert, err := tls.LoadX509KeyPair(s.CertFile, s.KeyFile)
 	if err != nil {
-		return fmt.Errorf("tls.LoadX509KeyPair(%s, %s) failed: ", s.CertFile, s.KeyFile)
+		return fmt.Errorf("tls.LoadX509KeyPair(%s, %s) failed: %s", s.CertFile, s.KeyFile, err)
 	}
 
 	addr := fmt.Sprintf(":%d", s.Port)
@@ -161,14 +161,12 @@ func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
 	for _, v := range requestBody.Targets {
 		m := make(map[string]string)
 		target := strings.Replace(v["target"].(string), "\\", "", -1)
-		fmt.Println("target*********", target)
 		if err = UnMarshalFn([]byte(target), &m); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			s.Logger.WithError(err).Errorf("unmarshalling target: %s", target)
 			return
 		}
 		lookUp = append(lookUp, m)
-		fmt.Println("lookup!!!!!!!!!!!!!", lookUp)
 	}
 
 	table := generateVolumeTableJSON(volumes, lookUp)
@@ -214,17 +212,17 @@ var HTTPWrite = func(w *http.ResponseWriter, data []byte) (int, error) {
 
 // Table contains the
 type Table struct {
-	Namespace               string `json:"Namespace"`
-	PersistentVolume        string `json:"Persistent Volume"`
+	Namespace               string `json:"namespace"`
+	PersistentVolume        string `json:"persistent_volume"`
 	Status                  string `json:"status"`
-	PersistentVolumeClaim   string `json:"Persistent Volume Claim"`
-	CSIDriver               string `json:"CSI Driver"`
-	Created                 string `json:"Created"`
-	ProvisionedSize         string `json:"Provisioned Size"`
-	StorageClass            string `json:"Storage Class"`
-	StorageSystemVolumeName string `json:"Storage System Volume Name"`
-	StoragePool             string `json:"Storage Pool"`
-	StorageSystem           string `json:"Storage System"`
+	PersistentVolumeClaim   string `json:"persistent_volume_claim"`
+	CSIDriver               string `json:"csi_driver"`
+	Created                 string `json:"created"`
+	ProvisionedSize         string `json:"provisioned_size"`
+	StorageClass            string `json:"storage_class"`
+	StorageSystemVolumeName string `json:"storage_system_volume_name"`
+	StoragePool             string `json:"storage_pool"`
+	StorageSystem           string `json:"storage_system"`
 	Protocol                string `json:"protocol"`
 }
 
