@@ -350,6 +350,7 @@ func TestHttpServerStartup(t *testing.T) {
 		})
 	}
 }
+
 func TestGetSecuredCipherSuites(t *testing.T) {
 	expectedSuites := tls.CipherSuites()
 	expectedIDs := make([]uint16, len(expectedSuites))
