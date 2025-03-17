@@ -170,7 +170,6 @@ func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	table := generateVolumeTableJSON(volumes, lookUp)
-	fmt.Printf("table::::::::::::::::::::::::::::: %v\n", table)
 	s.Logger.WithField("table", len(table)).Debug("generating table response")
 
 	output, err := MarshalFn(table)
