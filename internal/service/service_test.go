@@ -104,7 +104,7 @@ func TestQueryHandler(t *testing.T) {
 		}
 	}
 
-	hasExpectedResponse := func(expectedType string, expectedColumns int, expectedRows int) func(t *testing.T, body []byte, statusCode int, err error) {
+	hasExpectedResponse := func() func(t *testing.T, body []byte, statusCode int, err error) {
 		return func(t *testing.T, body []byte, _ int, err error) {
 			assert.Nil(t, err)
 
@@ -140,18 +140,11 @@ func TestQueryHandler(t *testing.T) {
 				{
 					Namespace: "ns-1",
 				},
-				// {
-				// 	Namespace: "ns-2",
-				// },
 			}
 
 			volumeFinder.EXPECT().GetPersistentVolumes(gomock.Any()).Times(1).Return(volumeInfo, nil)
 
-			expectedType := "table"
-			expectedColumns := 12
-			expectedRows := 2
-
-			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse(expectedType, expectedColumns, expectedRows)), http.NoBody
+			return volumeFinder, testOverrides{}, check(hasExpectedStatusCode(http.StatusOK), hasExpectedResponse()), http.NoBody
 		},
 		"error getting volume info": func(*testing.T) (service.VolumeInfoGetter, testOverrides, []checkFn, io.Reader) {
 			ctrl := gomock.NewController(t)
