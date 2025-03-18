@@ -57,13 +57,6 @@ type VolumeInfoGetter interface {
 	GetPersistentVolumes(ctx context.Context) ([]k8s.VolumeInfo, error)
 }
 
-// TableResponse is the expected response for getting a list of volumes (reference: https://grafana.com/grafana/plugins/grafana-simple-json-datasource)
-type TableResponse struct {
-	Columns []map[string]string `json:"columns"`
-	Rows    [][]string          `json:"rows"`
-	Type    string              `json:"type"`
-}
-
 // Run will start the service and listen for HTTP requests
 func (s *Service) Run() error {
 	if s.CertFile == "" || s.KeyFile == "" {
@@ -75,7 +68,7 @@ func (s *Service) Run() error {
 
 	cert, err := tls.LoadX509KeyPair(s.CertFile, s.KeyFile)
 	if err != nil {
-		return fmt.Errorf("tls.LoadX509KeyPair(%s, %s) failed: ", s.CertFile, s.KeyFile)
+		return fmt.Errorf("tls.LoadX509KeyPair(%s, %s) failed: %s", s.CertFile, s.KeyFile, err)
 	}
 
 	addr := fmt.Sprintf(":%d", s.Port)
@@ -113,8 +106,7 @@ func (s *Service) Routes() *mux.Router {
 	s.Logger.Debug("setting up routes")
 	r := mux.NewRouter()
 	r.HandleFunc("/", s.logHandler(s.rootRequest))
-	r.HandleFunc("/query", s.logHandler(s.queryRequest))
-	r.HandleFunc("/search", s.logHandler(s.searchRequest))
+	r.HandleFunc("/topology.json", s.logHandler(s.queryRequest))
 	if s.EnableDebug {
 		r.HandleFunc("/debug/pprof/", pprof.Index)
 		r.HandleFunc("/debug/pprof/{action}", pprof.Index)
@@ -138,67 +130,6 @@ func (s *Service) logHandler(h func(http.ResponseWriter, *http.Request)) func(ht
 
 func (s *Service) rootRequest(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
-}
-
-func (s *Service) searchRequest(w http.ResponseWriter, r *http.Request) {
-	write := func(out []byte) {
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		_, err := HTTPWrite(&w, []byte(out))
-		if err != nil {
-			s.Logger.WithError(err).Error("writing response")
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-	}
-
-	ctx, span := tracer.GetTracer(context.Background(), "GetPersistentVolumes")
-	defer span.End()
-
-	volumes, err := s.VolumeFinder.GetPersistentVolumes(ctx)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		s.Logger.WithError(err).Error("getting persistent volumes")
-		return
-	}
-	s.Logger.WithField("volumes", len(volumes)).Debug("volumefinder returned persistent volumes")
-
-	var requestBody struct {
-		Target string `json:"target"`
-	}
-	if err := DecodeBodyFn(r.Body, &requestBody); err != nil {
-		if err == io.EOF { // no body
-			write([]byte("[]"))
-			return
-		}
-		w.WriteHeader(http.StatusInternalServerError)
-		s.Logger.WithError(err).Error("decoding body")
-		return
-	}
-
-	list := generateVolumeAvailableMetrics(volumes, requestBody.Target)
-	output, err := MarshalFn(list)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		s.Logger.WithError(err).Error("marshalling list response")
-		return
-	}
-	write(output)
-}
-
-func generateVolumeAvailableMetrics(volumes []k8s.VolumeInfo, key string) []string {
-	found := make(map[string]bool)
-	for _, volume := range volumes {
-		filter := supportedColumnPair(volume)
-		if val, ok := filter[key]; ok {
-			found[val] = true
-		}
-	}
-
-	metrics := []string{}
-	for m := range found {
-		metrics = append(metrics, m)
-	}
-	return metrics
 }
 
 func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
@@ -239,6 +170,7 @@ func (s *Service) queryRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	table := generateVolumeTableJSON(volumes, lookUp)
+	s.Logger.WithField("table", len(table)).Debug("generating table response")
 
 	output, err := MarshalFn(table)
 	if err != nil {
@@ -277,6 +209,22 @@ var HTTPWrite = func(w *http.ResponseWriter, data []byte) (int, error) {
 	return (*w).Write([]byte(data))
 }
 
+// Table contains the
+type Table struct {
+	Namespace               string `json:"namespace"`
+	PersistentVolume        string `json:"persistent_volume"`
+	Status                  string `json:"status"`
+	PersistentVolumeClaim   string `json:"persistent_volume_claim"`
+	CSIDriver               string `json:"csi_driver"`
+	Created                 string `json:"created"`
+	ProvisionedSize         string `json:"provisioned_size"`
+	StorageClass            string `json:"storage_class"`
+	StorageSystemVolumeName string `json:"storage_system_volume_name"`
+	StoragePool             string `json:"storage_pool"`
+	StorageSystem           string `json:"storage_system"`
+	Protocol                string `json:"protocol"`
+}
+
 func supportedColumnPair(volume k8s.VolumeInfo) map[string]string {
 	return map[string]string{
 		"Namespace":      volume.Namespace,
@@ -301,32 +249,29 @@ func canAddRow(volume k8s.VolumeInfo, lookUp []map[string]string) bool {
 	return canADD
 }
 
-func generateVolumeTableJSON(volumes []k8s.VolumeInfo, lookUp []map[string]string) []*TableResponse {
-	table := &TableResponse{
-		Type: "table",
-	}
+func generateVolumeTableJSON(volumes []k8s.VolumeInfo, lookUp []map[string]string) []Table {
+	table := make([]Table, 0)
 
-	table.Columns = generateColumns("Namespace", "Persistent Volume", "Status", "Persistent Volume Claim", "CSI Driver",
-		"Created", "Provisioned Size", "Storage Class", "Storage System Volume Name", "Storage Pool", "Storage System", "Protocol")
-
-	table.Rows = make([][]string, 0)
 	for _, volume := range volumes {
 		if canAddRow(volume, lookUp) {
-			table.Rows = append(table.Rows, []string{
-				volume.Namespace, volume.PersistentVolume, volume.PersistentVolumeStatus, volume.VolumeClaimName, volume.Driver, volume.CreatedTime,
-				volume.ProvisionedSize, volume.StorageClass, volume.StorageSystemVolumeName, volume.StoragePoolName, volume.StorageSystem, volume.Protocol,
+			table = append(table, Table{
+				Namespace:               volume.Namespace,
+				PersistentVolume:        volume.PersistentVolume,
+				PersistentVolumeClaim:   volume.VolumeClaimName,
+				CSIDriver:               volume.Driver,
+				Created:                 volume.CreatedTime,
+				ProvisionedSize:         volume.ProvisionedSize,
+				StorageClass:            volume.StorageClass,
+				StorageSystemVolumeName: volume.StorageSystemVolumeName,
+				StoragePool:             volume.StoragePoolName,
+				StorageSystem:           volume.StorageSystem,
+				Protocol:                volume.Protocol,
+				Status:                  volume.PersistentVolumeStatus,
 			})
 		}
 	}
-	return []*TableResponse{table}
-}
 
-func generateColumns(columns ...string) []map[string]string {
-	result := make([]map[string]string, 0)
-	for _, column := range columns {
-		result = append(result, map[string]string{"text": column, "type": "string"})
-	}
-	return result
+	return table
 }
 
 // GetSecuredCipherSuites returns a set of secure cipher suites.
