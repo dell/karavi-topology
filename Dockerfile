@@ -24,8 +24,8 @@ LABEL vendor="Dell Technologies" \
       name="csm-topology" \
       summary="Dell Container Storage Modules (CSM) for Observability - Metrics for Topology" \
       description="Provides Kubernetes administrators with the topology data related to containerized storage that is provisioned by CSI (Container Storage Interface) Drivers for Dell storage products" \
-      release="1.13.0" \
-      version="1.11.0" \
+      release="1.14.0" \
+      version="1.12.0" \
       license="Apache-2.0"
 
 COPY /licenses /licenses
