@@ -10,7 +10,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.20.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 	go.opentelemetry.io/otel v1.37.0
 	go.opentelemetry.io/otel/exporters/zipkin v1.37.0
 	go.opentelemetry.io/otel/sdk v1.37.0
